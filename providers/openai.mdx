@@ -1,0 +1,95 @@
+---
+title: "OpenAI Provider — GPT, o-series, and Compatible APIs"
+sidebarTitle: "OpenAI"
+description: "Set up an OpenAI provider in Rikka to use GPT-4o, o-series reasoning models, or any OpenAI-compatible endpoint with full API key and URL control."
+---
+
+The OpenAI provider type connects Rikka to OpenAI's Chat Completions or Responses API. Because the OpenAI protocol has become an industry standard, this same provider type also works with dozens of third-party services — simply change the base URL. This page focuses on a direct OpenAI connection; for third-party and local setups, see [Custom / OpenAI-compatible providers](/providers/custom).
+
+## Add an OpenAI provider
+
+<Steps>
+  <Step title="Open provider settings">
+    Go to **Settings → Providers** and tap **Add Provider**.
+  </Step>
+  <Step title="Choose OpenAI">
+    Select **OpenAI** from the provider type list.
+  </Step>
+  <Step title="Enter your API key">
+    Paste your OpenAI API key into the **API Key** field. You can find or create keys at [platform.openai.com/api-keys](https://platform.openai.com/api-keys).
+  </Step>
+  <Step title="Confirm the base URL">
+    The base URL defaults to `https://api.openai.com/v1`. Leave it unchanged for a standard OpenAI connection.
+  </Step>
+  <Step title="Add models">
+    Tap **Add Model**, enter the model ID (for example `gpt-4o` or `o3`), set its display name and capabilities, then save. Repeat for each model you want to use.
+  </Step>
+  <Step title="Save">
+    Tap **Save** to apply your changes. The provider and its models now appear in the model picker.
+  </Step>
+</Steps>
+
+## Configuration reference
+
+### Core fields
+
+<ParamField path="apiKey" type="string" required>
+  Your OpenAI API key. Rikka stores it locally on your device and sends it only to the configured base URL. Supports comma-separated key rotation (for example `sk-key1,sk-key2`) when you have multiple keys.
+</ParamField>
+
+<ParamField path="baseUrl" type="string" default="https://api.openai.com/v1">
+  The root URL of the OpenAI-compatible API. Change this when connecting to a proxy or a third-party service that mirrors the OpenAI API.
+</ParamField>
+
+<ParamField path="chatCompletionsPath" type="string" default="/chat/completions">
+  The path appended to the base URL for chat requests. Override this only if your provider uses a non-standard path.
+</ParamField>
+
+### Advanced fields
+
+<ParamField path="useResponseApi" type="boolean" default="false">
+  Switch from the Chat Completions endpoint to OpenAI's newer Responses API. Enable this for models that only support the Responses API, such as those served by xAI's Grok endpoint.
+</ParamField>
+
+<ParamField path="includeHistoryReasoning" type="boolean" default="true">
+  When enabled, Rikka includes the `reasoning_content` from previous assistant turns when sending conversation history. Disable this if your provider rejects messages containing reasoning fields.
+</ParamField>
+
+### Balance checking
+
+Enable balance checking to display your remaining API credit directly in the provider detail screen.
+
+<ParamField path="balanceOption.enabled" type="boolean" default="false">
+  Turn on the balance display for this provider.
+</ParamField>
+
+<ParamField path="balanceOption.apiPath" type="string" default="/credits">
+  The path (relative to the base URL) or full URL used to fetch your balance. Common values:
+  - `/credits` — OpenRouter
+  - `/user/balance` — DeepSeek
+  - `/user/info` — SiliconFlow
+</ParamField>
+
+<ParamField path="balanceOption.resultPath" type="string" default="data.total_usage">
+  A dot-notation path into the JSON response that points to the numeric balance value. For example, `data.total_credits - data.total_usage` is evaluated for OpenRouter, and `balance_infos[0].total_balance` for DeepSeek.
+</ParamField>
+
+### Custom HTTP headers
+
+You can attach extra HTTP headers to every request this provider makes. Open the **Custom Headers** section in the provider detail screen and add key-value pairs. This is useful for authentication schemes that require additional headers (such as `HTTP-Referer` for OpenRouter) or for corporate proxies.
+
+### Custom request body fields
+
+The **Custom Body** section lets you inject additional JSON fields into each chat request. Use this to pass provider-specific parameters that Rikka does not expose as first-class settings — for example, `safe_mode` for certain moderation-enabled endpoints or vendor-specific sampling parameters.
+
+## Verify your connection
+
+After saving, open the provider detail screen and tap **Test Connection**. Rikka sends a minimal request to your base URL and reports whether the API key is accepted. If the test fails, double-check the API key and base URL.
+
+<Note>
+  Not all OpenAI-compatible endpoints implement the `/models` list route. If model discovery does not work, add model IDs manually using the exact ID the provider expects.
+</Note>
+
+## Example: connect to OpenRouter via the OpenAI type
+
+Use the OpenAI provider type, set the base URL to `https://openrouter.ai/api/v1`, add your OpenRouter API key, and optionally add `HTTP-Referer` and `X-Title` as custom headers. See [Custom providers](/providers/custom) for a full walkthrough.

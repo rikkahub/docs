@@ -1,0 +1,171 @@
+---
+title: "Assistants: Personas, Models, and Settings"
+sidebarTitle: "Overview"
+description: "Create and manage reusable AI personas that bundle a system prompt, model choice, and generation settings into a single switchable profile."
+---
+
+Assistants are saved configurations that give the AI a distinct identity and behaviour. Each assistant stores a system prompt, an optional model override, generation parameters, and a host of advanced options — so you can switch between a coding helper, a creative writing partner, and a language tutor with a single tap, without reconfiguring anything.
+
+## Creating an assistant
+
+<Steps>
+  <Step title="Open Settings">
+    Tap the settings icon from the main screen to open the Settings menu.
+  </Step>
+  <Step title="Navigate to Assistants">
+    Select **Assistants** from the list.
+  </Step>
+  <Step title="Add a new assistant">
+    Tap the **+** button in the top-right corner. Enter a name for your assistant, then tap **Save**.
+  </Step>
+  <Step title="Configure the assistant">
+    Tap the newly created assistant card to open its detail pages and fill in the fields described below.
+  </Step>
+</Steps>
+
+## Importing a SillyTavern character card
+
+Rikka can import character cards in the standard SillyTavern format, giving you instant access to community-created personas without any manual setup.
+
+<Steps>
+  <Step title="Open the creation sheet">
+    Tap the **+** button on the Assistants screen.
+  </Step>
+  <Step title="Choose your file format">
+    Tap **Import Tavern PNG** to pick a character card image, or **Import Tavern JSON** to pick a JSON file.
+  </Step>
+  <Step title="Confirm the import">
+    Rikka reads the embedded metadata, builds the system prompt automatically, and saves the assistant — including the card artwork as the chat background.
+  </Step>
+</Steps>
+
+<Note>
+  Rikka supports character card spec versions **v2** and **v3**. Importing a card automatically populates the name, system prompt, description, personality, scenario, and first message.
+</Note>
+
+## Basic configuration
+
+<CardGroup cols={2}>
+  <Card title="Identity" icon="user">
+    Set the assistant's **name** and **avatar** to make it easy to recognise at a glance. Enable **Use Assistant Avatar** to display the assistant's avatar in place of the model icon inside the chat.
+  </Card>
+  <Card title="Model override" icon="cpu">
+    Set a **Chat Model** to pin this assistant to a specific provider and model. Leave it blank to use whatever model is currently selected as the global default.
+  </Card>
+  <Card title="System prompt" icon="message-square">
+    Write the core instructions that define how the assistant thinks and responds. The system prompt is sent at the beginning of every conversation. You can use [placeholder variables](/assistants/prompt-injection#placeholder-variables) inside the system prompt.
+  </Card>
+  <Card title="Tags" icon="tag">
+    Assign tags to organise your assistants. Use the tag filter bar on the Assistants screen to quickly find the one you need.
+  </Card>
+</CardGroup>
+
+## Key settings reference
+
+### Generation settings
+
+<ParamField path="temperature" type="float | null" default="null">
+  Controls response randomness. Values range from `0` (deterministic) to `2` (very creative). Leave unset to use the model's default.
+</ParamField>
+
+<ParamField path="topP" type="float | null" default="null">
+  Nucleus sampling threshold. A lower value restricts the model to higher-probability tokens. Leave unset to use the model's default. Avoid setting both `temperature` and `topP` at the same time.
+</ParamField>
+
+<ParamField path="maxTokens" type="int | null" default="null">
+  Maximum number of tokens the model may generate in a single response. Leave unset for no explicit cap.
+</ParamField>
+
+<ParamField path="reasoningLevel" type="enum" default="AUTO">
+  Controls how much chain-of-thought reasoning the model performs before answering. `AUTO` lets the model decide.
+</ParamField>
+
+<ParamField path="streamOutput" type="boolean" default="true">
+  When enabled, the assistant's response streams token-by-token as it is generated. Disable this if you prefer to receive the complete response at once.
+</ParamField>
+
+### Context and history
+
+<ParamField path="contextMessageSize" type="int" default="0">
+  The maximum number of recent messages included as conversation history in each request. Set to `0` to include all messages. Reducing this value lowers token usage for long conversations.
+</ParamField>
+
+### Preset messages
+
+<ParamField path="presetMessages" type="list">
+  A list of messages that are always prepended to the conversation before any user input. Use preset messages to inject fixed examples, persona warm-up exchanges, or boilerplate context that every conversation with this assistant should start with.
+</ParamField>
+
+### HTTP overrides
+
+<ParamField path="customHeaders" type="list">
+  Additional HTTP headers to send with every request made by this assistant. Useful for routing through proxies or satisfying custom authentication requirements.
+</ParamField>
+
+<ParamField path="customBodies" type="list">
+  Extra fields to merge into every request body. Use this to pass provider-specific parameters that Rikka does not expose directly.
+</ParamField>
+
+### Tools and integrations
+
+<ParamField path="mcpServers" type="list">
+  The MCP (Model Context Protocol) servers this assistant is allowed to call. Tools from servers not in this list are hidden from the model.
+</ParamField>
+
+<ParamField path="localTools" type="list" default="[TimeInfo]">
+  Built-in device tools available to this assistant. **TimeInfo** is included by default, letting the model query the current date and time.
+</ParamField>
+
+<ParamField path="enabledSkills" type="set">
+  The set of skill names that are active for this assistant. Skills extend what the assistant can do beyond standard chat, such as web search or image generation, depending on what your setup supports.
+</ParamField>
+
+### Appearance
+
+<ParamField path="background" type="string | null" default="null">
+  URI of a custom background image shown in the chat view for this assistant. Import a SillyTavern character card to set this automatically.
+</ParamField>
+
+<ParamField path="backgroundOpacity" type="float" default="1.0">
+  Opacity of the background image, from `0.0` (invisible) to `1.0` (fully opaque).
+</ParamField>
+
+## Switching assistants in chat
+
+Tap the assistant name or avatar shown in the chat toolbar to open a picker. Select any assistant to apply its persona and settings to the current or next conversation. The change takes effect immediately for new messages.
+
+## Quick Messages
+
+Quick Messages are pre-written message templates you can attach to an assistant and fire off with a single tap during a conversation — ideal for recurring prompts like "summarise the above" or "translate to English".
+
+<Steps>
+  <Step title="Create quick messages">
+    Go to **Settings → Quick Messages** and tap **+** to create a template with a title and content.
+  </Step>
+  <Step title="Attach to an assistant">
+    Open the assistant's **Extensions** tab, select the **Quick Messages** sub-tab, and toggle on the messages you want available.
+  </Step>
+  <Step title="Use in chat">
+    Tap the quick-message icon in the chat toolbar to see your attached templates and send one instantly.
+  </Step>
+</Steps>
+
+## Regex transformers
+
+Regex transformers let you define find-and-replace rules that run on messages before they are displayed or sent. This is useful for sanitising output, reformatting citations, or applying cosmetic changes.
+
+Each rule has the following fields:
+
+| Field | Description |
+|---|---|
+| **Name** | A human-readable label for the rule |
+| **Find pattern** | A standard regular expression to match against |
+| **Replace with** | The replacement string (supports capture group references) |
+| **Scope** | Whether the rule applies to **User** messages, **Assistant** messages, or both |
+| **Visual only** | When enabled, the replacement is shown in the UI but the original text is still sent to the model |
+
+<Tip>
+  Enable **Visual only** when you want to clean up the display without changing what the model actually sees — for example, stripping markdown syntax that your renderer already handles.
+</Tip>
+
+To manage regex rules, open the assistant's **Prompt** tab and scroll to the **Regex** section.

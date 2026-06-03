@@ -1,0 +1,144 @@
+---
+title: "Quickstart: Send Your First AI Message in 5 Minutes"
+sidebarTitle: "Quickstart"
+description: "Install Rikka on Android, connect your first AI provider with your API key, choose a model, and send your first message in under five minutes."
+---
+
+This guide gets you from zero to your first AI conversation as quickly as possible. You need an Android device, a copy of Rikka installed, and an API key from at least one AI provider. If you do not have an API key yet, sign up with your chosen provider first — links are included in the steps below.
+
+<Steps>
+  <Step title="Download and Install Rikka">
+    Install Rikka on your Android device from either the Google Play Store or the official website.
+
+    <CardGroup cols={2}>
+      <Card
+        title="Google Play Store"
+        icon="rocket"
+        href="https://play.google.com/store/apps/details?id=me.rerere.rikkahub"
+      >
+        Tap **Install** on the Play listing for automatic updates and easy installation.
+      </Card>
+      <Card
+        title="Official Website"
+        icon="download"
+        href="https://rikka-ai.com/download"
+      >
+        Download the APK directly from rikka-ai.com if the Play Store is unavailable in your region.
+      </Card>
+    </CardGroup>
+
+    Once installation is complete, open Rikka from your home screen or app drawer.
+  </Step>
+
+  <Step title="Open Settings and Add a Provider">
+    Rikka needs at least one AI provider before you can chat. Navigate to the provider settings now.
+
+    1. Tap the **Settings** icon (gear) in the bottom navigation bar.
+    2. Select **Providers** from the settings menu.
+    3. Tap **Add Provider** and choose your provider type from the list.
+
+    <Tabs>
+      <Tab title="OpenAI">
+        Select **OpenAI** from the provider list. OpenAI powers models like GPT-4o and GPT-4.1.
+
+        Get your API key at [platform.openai.com/api-keys](https://platform.openai.com/api-keys).
+      </Tab>
+      <Tab title="Google Gemini">
+        Select **Google Gemini** from the provider list. Gemini powers models like Gemini 2.5 Pro and Gemini 2.0 Flash.
+
+        Get your API key at [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey).
+      </Tab>
+      <Tab title="Anthropic Claude">
+        Select **Anthropic Claude** from the provider list. Claude powers models like Claude Sonnet and Claude Opus.
+
+        Get your API key at [console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys).
+      </Tab>
+      <Tab title="OpenAI-Compatible">
+        Select **OpenAI-Compatible** from the provider list to connect any endpoint that follows the OpenAI API format — such as Ollama, OpenRouter, Mistral, or a self-hosted model.
+
+        Enter the **Base URL** of your endpoint (for example, `http://localhost:11434/v1` for a local Ollama instance) along with your API key if required.
+      </Tab>
+    </Tabs>
+  </Step>
+
+  <Step title="Enter Your API Key">
+    Paste your API key into the **API Key** field for the provider you selected.
+
+    <Warning>
+      Treat your API key like a password. Do not share it, and do not paste it into untrusted apps. Rikka stores your key locally on your device and never sends it to Rikka's servers — it goes directly to your chosen provider.
+    </Warning>
+
+    After pasting your key, tap **Save** or **Confirm** to store the provider configuration. Rikka validates the key in the background and displays a green checkmark when the connection is successful.
+  </Step>
+
+  <Step title="Pick a Model">
+    With your provider connected, choose the model you want to use for your first conversation.
+
+    1. From the **Providers** screen, tap the provider you just added.
+    2. Under **Default Model**, tap the model selector and browse the available models.
+    3. Choose a model — a good starting point is listed below for each provider.
+
+    | Provider | Recommended Starter Model |
+    |---|---|
+    | OpenAI | `gpt-4o-mini` |
+    | Google Gemini | `gemini-2.0-flash` |
+    | Anthropic Claude | `claude-3-5-haiku` |
+    | OpenAI-Compatible | Depends on your endpoint |
+
+    <Note>
+      You can change the model at any time from within a conversation using the model picker in the chat toolbar. Your default model is just the starting point for new chats.
+    </Note>
+  </Step>
+
+  <Step title="Start Your First Conversation">
+    You are ready to chat. Head back to the main screen and open a new conversation.
+
+    1. Tap the **Chat** icon in the bottom navigation bar to return to the conversation list.
+    2. Tap the **New Chat** button (pencil or plus icon) in the top-right corner.
+    3. Confirm that the correct provider and model are shown in the chat toolbar. Tap them to switch if needed.
+    4. Type your first message in the text field at the bottom and tap **Send**.
+
+    Rikka streams the response back to you in real time. That's it — you're up and running!
+
+    <Tip>
+      Try a simple opener like *"Explain what you can help me with"* to get a feel for the model's capabilities before diving into more specific tasks.
+    </Tip>
+  </Step>
+</Steps>
+
+<Tip>
+  Rikka supports OpenAI, Google Gemini, Anthropic Claude, and any OpenAI-compatible API. See the **[Providers Overview](/providers/overview)** to learn how to add multiple providers and switch between them mid-conversation.
+</Tip>
+
+## What to Explore Next
+
+<CardGroup cols={2}>
+  <Card
+    title="Providers Overview"
+    icon="plug"
+    href="/providers/overview"
+  >
+    Add more providers and learn how to configure advanced options like custom base URLs and headers.
+  </Card>
+  <Card
+    title="Custom Assistants"
+    icon="robot"
+    href="/assistants/overview"
+  >
+    Create reusable assistants with custom system prompts, model defaults, and personalities.
+  </Card>
+  <Card
+    title="MCP Extensions"
+    icon="puzzle"
+    href="/extensions/mcp"
+  >
+    Connect external tools and data sources to give your AI access to real-world actions.
+  </Card>
+  <Card
+    title="Web Access"
+    icon="globe"
+    href="/settings/web-access"
+  >
+    Enable live web search so your AI can answer questions about current events and recent information.
+  </Card>
+</CardGroup>

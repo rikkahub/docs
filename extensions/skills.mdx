@@ -1,0 +1,98 @@
+---
+title: "Skills: Reusable Capability Bundles for Assistants"
+sidebarTitle: "Skills"
+description: "Bundle prompt instructions into reusable skills you can install once and enable on any Rikka assistant, then share or import via GitHub."
+---
+
+Skills are self-contained bundles of instructions and configuration that extend what an assistant can do. Think of a skill as a plug-in you install once and then enable on any assistant you like. A skill might teach an assistant how to write in a specific style, follow a domain-specific reasoning process, or call a particular set of tools — all defined in a single portable package that you can share, import from GitHub, or author yourself.
+
+## Browsing and Managing Skills
+
+Open **Settings → Extensions → Skills** to see all the skills installed on your device. Each card shows the skill's name, a short description, and — if the author included one — a compatibility note indicating which models or providers it works best with.
+
+<CardGroup cols={2}>
+  <Card title="Import from GitHub" icon="github">
+    Tap **+** and choose **Import from GitHub**. Paste a repository URL such as `https://github.com/owner/repo`. Rikka downloads the skill files directly from the repository's default branch.
+  </Card>
+  <Card title="Import from File" icon="file-import">
+    Tap **+** and choose **Import from File**. Select a `.zip` archive or a plain text file from your device. Rikka extracts the skill and adds it to the list.
+  </Card>
+  <Card title="Create Manually" icon="pen">
+    Tap **+** and choose **Add Manually**. Paste in the skill content directly — Rikka reads the YAML frontmatter to extract the skill's name and description automatically.
+  </Card>
+  <Card title="Delete a Skill" icon="trash">
+    Tap the **⋮** menu on any skill card and choose **Delete**. Rikka removes the skill from every assistant that had it enabled.
+  </Card>
+</CardGroup>
+
+## Skill File Format
+
+Every skill is built around a `SKILL.md` file that Rikka reads when loading the skill. The file starts with a YAML frontmatter block followed by the instruction body.
+
+```markdown
+---
+name: code-reviewer
+description: "Performs thorough code review with style and security feedback"
+compatibility: "Works best with GPT-4o, Claude 3.5+"
+allowed-tools: read_file, search
+---
+
+You are an expert code reviewer. When given a code snippet or file, you:
+1. Check for logic errors and edge cases
+2. Identify security vulnerabilities
+3. Suggest style improvements aligned with the project's conventions
+...
+```
+
+<Accordion title="Frontmatter fields">
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `name` | ✅ | Unique identifier for the skill. Must be non-empty and URL-safe. |
+| `description` | ✅ | One-line summary shown on the skill card. |
+| `compatibility` | ✗ | Free-text hint about which models or providers work best. |
+| `allowed-tools` | ✗ | Space-separated list of tool names this skill is designed to use. |
+
+</Accordion>
+
+## Viewing and Editing a Skill's Files
+
+Tap any skill card to open the **Skill Detail** page. You'll see a collapsible file tree showing every file inside the skill directory. 
+
+- Tap the **pencil** icon next to a file to edit its contents in a built-in text editor.
+- Tap the **trash** icon to delete a file (you cannot delete `SKILL.md`).
+- Tap the **+** FAB to add a new file, optionally nested in a subfolder using a path like `examples/basic.md`.
+
+<Warning>
+  Editing `SKILL.md` directly changes the skill's instructions. If you imported the skill from GitHub, your edits will not sync back to the upstream repository — keep a backup if you plan to make significant changes.
+</Warning>
+
+## Enabling a Skill on an Assistant
+
+Installing a skill globally does not activate it for any assistant automatically. You choose which assistants benefit from each skill.
+
+<Steps>
+  <Step title="Open assistant settings">
+    Long-press an assistant on the home screen, or tap the assistant name and then the **Edit** icon to open its settings page.
+  </Step>
+  <Step title="Find the Enabled Skills section">
+    Scroll down to **Enabled Skills**. All currently installed skills appear here as toggles.
+  </Step>
+  <Step title="Toggle on the skills you want">
+    Enable any skills that should be active for this assistant. The assistant's system prompt will be augmented with the skill's instruction body at inference time.
+  </Step>
+  <Step title="Test the assistant">
+    Start a new chat with the assistant and verify it behaves according to the skill's instructions.
+  </Step>
+</Steps>
+
+<Tip>
+  You can enable multiple skills on a single assistant. Keep in mind that each active skill's instructions are injected into the system prompt, so very large or numerous skills may consume a meaningful portion of the model's context window.
+</Tip>
+
+## Sharing Skills
+
+Because each skill is just a directory of plain text files, sharing is straightforward:
+
+- **ZIP and send**: Compress the skill folder and share the `.zip` file via any messaging app or file transfer method. The recipient imports it with **Import from File**.
+- **GitHub repository**: Publish the skill directory as a public GitHub repo. Anyone with the URL can import it directly into Rikka.

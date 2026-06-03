@@ -1,0 +1,80 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "Rikka",
+  "theme": "almond",
+  "logo": {
+    "light": "https://media.brand.dev/8cf16b70-1ceb-463e-943a-1265b3100013.svg",
+    "dark": "https://media.brand.dev/8cf16b70-1ceb-463e-943a-1265b3100013.svg"
+  },
+  "favicon": "https://media.brand.dev/8fad3aae-4903-4553-aff8-379483297ba0.svg",
+  "colors": {
+    "primary": "#040404"
+  },
+  "navbar": {
+    "primary": {
+      "type": "github",
+      "href": "https://github.com/rikkahub/rikkahub"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Docs",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "download",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Providers",
+            "pages": [
+              "providers/overview",
+              "providers/openai",
+              "providers/google",
+              "providers/claude",
+              "providers/custom"
+            ]
+          },
+          {
+            "group": "Chat",
+            "pages": [
+              "chat/conversations",
+              "chat/multimodal",
+              "chat/branching",
+              "chat/search"
+            ]
+          },
+          {
+            "group": "Assistants",
+            "pages": [
+              "assistants/overview",
+              "assistants/memory",
+              "assistants/prompt-injection"
+            ]
+          },
+          {
+            "group": "Extensions",
+            "pages": [
+              "extensions/mcp",
+              "extensions/skills",
+              "extensions/speech",
+              "extensions/image-generation"
+            ]
+          },
+          {
+            "group": "Settings & Sync",
+            "pages": [
+              "settings/appearance",
+              "settings/web-access",
+              "settings/backup"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

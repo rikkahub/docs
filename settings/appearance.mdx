@@ -1,0 +1,173 @@
+---
+title: "Rikka Appearance: Themes, Dark Mode, and Display Settings"
+sidebarTitle: "Appearance"
+description: "Control how Rikka looks: enable Material You dynamic color, switch dark or AMOLED mode, pick a preset theme, build a custom palette, and tune display."
+---
+
+Rikka gives you full control over how the app looks and feels. You can let Android automatically generate a color scheme from your wallpaper, choose from a curated set of built-in themes, or design a completely custom palette using an HSL color picker. Display options let you adjust font size, message density, code block behavior, and much more — all stored locally on your device.
+
+## Color and Theme
+
+### Dynamic Color
+
+Dynamic Color automatically generates Rikka's entire color scheme from your current wallpaper using Android's Material You system. When you change your wallpaper, Rikka's accent colors update to match.
+
+<Tip>
+  Dynamic Color requires Android 12 or later. On older devices the toggle is hidden and Rikka falls back to the selected preset or custom theme.
+</Tip>
+
+To enable Dynamic Color:
+
+<Steps>
+  <Step title="Open Settings">
+    Tap the **Settings** icon from the main screen.
+  </Step>
+  <Step title="Go to Preferences → Theme">
+    Select **Preferences**, then tap **Theme**.
+  </Step>
+  <Step title="Toggle Dynamic Color on">
+    Enable the **Dynamic Color** switch. Rikka's UI immediately adopts your wallpaper-derived palette.
+  </Step>
+</Steps>
+
+When Dynamic Color is active, preset and custom theme selections are ignored. Disable Dynamic Color to use them.
+
+---
+
+### Dark Mode and AMOLED Dark Mode
+
+Rikka follows your system dark/light mode preference by default. You can also enable **AMOLED Dark Mode** for a true-black background that saves battery on OLED screens.
+
+To enable AMOLED Dark Mode:
+
+<Steps>
+  <Step title="Open Settings → Preferences → Theme">
+    Navigate to **Settings → Preferences → Theme**.
+  </Step>
+  <Step title="Enable AMOLED Dark Mode">
+    Toggle on **AMOLED Dark Mode**. The background switches to pure black in dark mode.
+  </Step>
+</Steps>
+
+---
+
+### Preset Themes
+
+Rikka ships with five hand-crafted themes. Each theme has a dedicated light and dark color scheme that is fully accessible and meets Material You contrast guidelines.
+
+<CardGroup cols={3}>
+  <Card title="Sakura" icon="circle">
+    Soft pinks inspired by cherry blossoms. The default theme.
+  </Card>
+  <Card title="Ocean" icon="circle">
+    Cool blues and teals drawn from deep water.
+  </Card>
+  <Card title="Spring" icon="circle">
+    Fresh greens evoking new growth and clear skies.
+  </Card>
+  <Card title="Autumn" icon="circle">
+    Warm ambers and earthy tones of the fall season.
+  </Card>
+  <Card title="Black" icon="circle">
+    High-contrast dark-first palette optimized for AMOLED.
+  </Card>
+</CardGroup>
+
+To apply a preset theme:
+
+<Steps>
+  <Step title="Disable Dynamic Color">
+    Preset themes are only available when **Dynamic Color** is off.
+  </Step>
+  <Step title="Open Settings → Preferences → Theme → Theme Settings">
+    Tap **Theme Settings** to open the theme picker.
+  </Step>
+  <Step title="Select a preset">
+    Tap any preset theme tile. The app updates immediately — no restart required.
+  </Step>
+</Steps>
+
+---
+
+### Custom Themes
+
+Create your own color palette by specifying primary, secondary, and tertiary colors using an HSL (Hue, Saturation, Lightness) color picker. You can also import and export themes as JSON to share them.
+
+<Steps>
+  <Step title="Open Theme Settings">
+    Go to **Settings → Preferences → Theme → Theme Settings**.
+  </Step>
+  <Step title="Add a new custom theme">
+    Tap the **Add** button. Enter a name for your theme.
+  </Step>
+  <Step title="Set your colors">
+    Use the HSL sliders to choose your primary, secondary, and tertiary colors. You can also type an HSL value directly (for example, `hsl(267 36% 48%)`). A live preview of the palette updates as you adjust the sliders.
+  </Step>
+  <Step title="Save the theme">
+    Tap **Save**. Your custom theme appears in the theme list alongside the presets; tap it to activate it.
+  </Step>
+</Steps>
+
+<Tip>
+  You can export a custom theme as JSON to share it, or import one from a friend. Use the copy icon next to any custom theme to copy its JSON to the clipboard. To import, tap **Import** and paste the JSON into the dialog that appears.
+</Tip>
+
+<Note>
+  Editing or deleting a custom theme takes effect immediately. If you delete the currently active custom theme, Rikka reverts to the default Sakura preset.
+</Note>
+
+---
+
+## Display Settings
+
+Display settings let you control what information appears in the chat view and how content is rendered. Access them at **Settings → Preferences → Display**.
+
+### Message Display
+
+<Accordion title="User avatar and nickname">
+  - **Show User Avatar** — display your avatar bubble next to your messages.
+  - **User Nickname** — set the name shown in conversations.
+</Accordion>
+
+<Accordion title="Assistant bubble and opacity">
+  - **Show Assistant Bubble** — wrap assistant messages in a colored bubble instead of plain text.
+  - **Bubble Opacity** — drag the slider to control how transparent the bubble background is.
+</Accordion>
+
+<Accordion title="Model information">
+  - **Show Model Icon** — display the provider icon next to each assistant message.
+  - **Show Model Name** — show the model name beneath each assistant reply.
+</Accordion>
+
+<Accordion title="Timestamps and token usage">
+  - **Show Date/Time in Message** — append a timestamp to every message.
+  - **Show Token Usage** — display the prompt and completion token counts after each response.
+</Accordion>
+
+<Accordion title="Thinking content">
+  - **Show Thinking Content** — reveal chain-of-thought reasoning blocks when a model produces them.
+  - **Auto-Collapse Thinking** — automatically fold thinking blocks after the response finishes generating.
+</Accordion>
+
+### Font Settings
+
+<ParamField path="Font Family" type="select">
+  Choose between **Default** (system sans-serif), **Serif**, **Monospace**, or **Custom**. Selecting **Custom** prompts you to import a font file from your device.
+</ParamField>
+
+<ParamField path="Font Size" type="slider">
+  Scale the chat font size. A live preview updates as you drag the slider.
+</ParamField>
+
+### Code Block Settings
+
+<Accordion title="Code display options">
+  - **Auto-Wrap** — wrap long lines inside code blocks instead of scrolling horizontally.
+  - **Auto-Collapse** — collapse code blocks taller than the viewport by default.
+  - **Show Line Numbers** — prepend a line number to each line of code.
+</Accordion>
+
+### Rendering
+
+- **LaTeX Rendering** — enable or disable mathematical expression rendering using LaTeX syntax inside messages.
+- **Blur Effect** — apply a subtle blur to certain UI surfaces for a frosted-glass look.

@@ -1,0 +1,91 @@
+---
+title: "Access Rikka's Chat Interface from Any Browser on Your LAN"
+sidebarTitle: "Web Access"
+description: "Run a local HTTP server inside Rikka so you can use the full chat interface from any desktop or mobile browser on the same Wi-Fi network."
+---
+
+Rikka can run a lightweight HTTP server directly on your Android device. Once the server is running, any browser on the same local network — your laptop, a tablet, or another phone — can open the Rikka chat interface without installing anything. The app stays on your phone; the web UI is just a window into it.
+
+<Note>
+  The web server only works while Rikka is running on your Android device. Closing or force-stopping the app shuts the server down. A persistent foreground notification keeps the server alive when the app is in the background.
+</Note>
+
+## Starting the Server
+
+<Steps>
+  <Step title="Open Web Access settings">
+    In Rikka, go to **Settings → Web Access**.
+  </Step>
+  <Step title="Configure the port">
+    Enter a port number in the **Port** field. The default is **8080**. Use any value between 1024 and 65535. You cannot change the port while the server is already running.
+  </Step>
+  <Step title="Choose network visibility">
+    Toggle **Localhost Only** if you want the server accessible only from the device itself (useful for ADB port forwarding). Leave it off to allow access from other devices on your Wi-Fi network.
+  </Step>
+  <Step title="Set an access password (recommended)">
+    Enter a password in the **Access Password** field. See [Securing the server](#securing-the-server) below.
+  </Step>
+  <Step title="Start the server">
+    Tap the **Start** button. Rikka requests notification permission and, on Android 15 and later, local network permission, then starts the server.
+  </Step>
+</Steps>
+
+## Finding the Server URL
+
+Once the server is running, the Web Access page shows the available addresses:
+
+| Address type | When shown | Example |
+|---|---|---|
+| **LAN Address** | Localhost Only is off | `http://192.168.1.42:8080` |
+| **mDNS Address** | Localhost Only is off, mDNS available | `http://android-device.local:8080` |
+| **Local Address** | Always | `http://localhost:8080` |
+
+Tap any address row to copy it to your clipboard. A toast confirms the copy. Open the URL in any browser on the same network.
+
+<Tip>
+  The mDNS address (`.local`) is easier to type and works reliably on most home networks without knowing the device's IP. If it doesn't resolve, fall back to the LAN Address.
+</Tip>
+
+## Securing the Server
+
+<Warning>
+  If you expose the server beyond localhost (i.e. **Localhost Only** is disabled), anyone on your local network can reach the chat interface. Set an access password to prevent unauthorized access to your conversations and AI provider keys.
+</Warning>
+
+Rikka uses JWT-based authentication to protect the server:
+
+<Steps>
+  <Step title="Enter an access password">
+    Type a password in the **Access Password** field on the Web Access settings page.
+  </Step>
+  <Step title="Enable JWT authentication">
+    Toggle on **Enable JWT Auth**. This toggle becomes available once you have entered a non-empty password. Clearing the password automatically disables JWT auth.
+  </Step>
+  <Step title="Authenticate in the browser">
+    When you open the server URL for the first time, the web UI prompts for the password. On success, a JWT token is stored in the browser session so you don't have to enter it again until the token expires.
+  </Step>
+</Steps>
+
+## Configuration Reference
+
+<ParamField path="Port" type="integer" default="8080">
+  The TCP port the HTTP server listens on. Must be between 1024 and 65535. Shown as an error state if the value is out of range. Cannot be changed while the server is running.
+</ParamField>
+
+<ParamField path="Localhost Only" type="boolean" default="false">
+  When enabled, the server binds to `127.0.0.1` and is only reachable from the device itself. When disabled, the server binds to all network interfaces and is reachable from other devices on the same network. Cannot be changed while the server is running.
+</ParamField>
+
+<ParamField path="Enable JWT Auth" type="boolean" default="false">
+  Require a signed JWT token for every request. Tokens are issued at login using the **Access Password**. Only available when the access password field is non-empty.
+</ParamField>
+
+<ParamField path="Access Password" type="string" default="">
+  The password users must enter in the browser to obtain a JWT token. Clearing this field automatically disables JWT auth. Treat this like any other sensitive credential.
+</ParamField>
+
+## Stopping the Server
+
+Tap the **Stop** button on the Web Access settings page. The foreground service and notification are dismissed and all active browser sessions lose connectivity immediately.
+
+You can also stop the server by dismissing the persistent notification from the Android notification shade.

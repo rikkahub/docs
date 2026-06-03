@@ -1,0 +1,127 @@
+---
+title: "Generate Images from Text Prompts in Rikka for Android"
+sidebarTitle: "Image Generation"
+description: "Open Rikka's image generation workspace to create images from text prompts using any image-capable model from your configured providers."
+---
+
+Rikka includes a dedicated image generation workspace that lets you turn text prompts into images — or supply a reference image and ask the model to edit it. Generated images are stored in an in-app gallery and can be saved to your device's photo library at any time.
+
+<Note>
+  Image generation requires a provider that supports image synthesis. Supported options include **DALL-E 3** (OpenAI), **Imagen 3** (Google), and any other provider you have configured in Rikka that exposes an image generation model. Make sure you have added and authenticated at least one such provider in **Settings → Providers** before continuing.
+</Note>
+
+## Selecting an Image Generation Model
+
+Before you generate your first image, tell Rikka which model to use.
+
+<Steps>
+  <Step title="Open Model Settings">
+    Go to **Settings → Models** and look for the **Image Generation Model** selector.
+  </Step>
+  <Step title="Pick a model">
+    The selector lists every image-capable model across all your configured providers. Choose the one you want — for example, `dall-e-3` from your OpenAI provider, or `imagen-3.0-generate-002` from Google.
+  </Step>
+  <Step title="Save">
+    Your choice is saved automatically. You can also change the model directly from the image generation screen at any time using the model selector in the input bar.
+  </Step>
+</Steps>
+
+## Opening the Image Generation Screen
+
+Tap the **Image Generation** entry in the app drawer (the grid icon on the home screen) to open the dedicated workspace. The screen has two tabs at the bottom:
+
+<CardGroup cols={2}>
+  <Card title="Generate" icon="wand-magic-sparkles">
+    Write a prompt, adjust settings, and create new images. Your most recently generated images appear at the top of this tab.
+  </Card>
+  <Card title="Gallery" icon="images">
+    Browse every image you have generated across all sessions, with the prompt and model name displayed on each card.
+  </Card>
+</CardGroup>
+
+## Generating an Image from a Text Prompt
+
+<Steps>
+  <Step title="Write your prompt">
+    Type a descriptive text prompt in the input field at the bottom of the **Generate** tab. The more detail you include — subject, style, lighting, composition — the more closely the output matches your vision.
+  </Step>
+  <Step title="Adjust generation settings (optional)">
+    Tap the **settings (wrench) icon** to open the settings sheet. You can configure:
+
+    - **Model** — switch to a different image model without leaving the screen.
+    - **Number of images** — generate between 1 and 4 images in a single request.
+    - **Aspect ratio** — choose Square, Landscape, or Portrait.
+  </Step>
+  <Step title="Tap the send button">
+    Tap the circular **arrow** button. Rikka sends your prompt to the selected model and shows a loading indicator while it waits for the result.
+  </Step>
+  <Step title="Review the output">
+    Generated images appear above the input bar. Tap any image to open a full-screen preview.
+  </Step>
+</Steps>
+
+<Tip>
+  Start a **New Session** (the **+** icon in the top-right corner) to clear the current prompt and generated images and begin fresh. Each session keeps its own context separate from the gallery history.
+</Tip>
+
+## Editing an Existing Image
+
+Some models — such as `dall-e-2` and certain Imagen variants — support image editing, where you provide a reference image and a prompt describing the changes you want.
+
+<Steps>
+  <Step title="Add a reference image">
+    Tap the **image add (+) icon** in the input bar to pick one or more images from your device's photo library. Thumbnails appear above the text field; tap the **×** on any thumbnail to remove it.
+  </Step>
+  <Step title="Describe the edit">
+    Write a prompt explaining what changes to apply, for example: *"Change the background to a sunset over the ocean"*.
+  </Step>
+  <Step title="Tap the send button">
+    Rikka calls the provider's image-edit endpoint instead of the standard generation endpoint when reference images are present.
+  </Step>
+</Steps>
+
+<Warning>
+  Not all image models support editing. If your selected model only supports generation, Rikka will return an error when you try to submit with reference images attached. Switch to a model that supports editing (check your provider's documentation) or remove the reference images to do a standard generation instead.
+</Warning>
+
+## Working with the Gallery
+
+Every image you generate is automatically saved to Rikka's in-app gallery. Open the **Gallery** tab to browse your history.
+
+Each gallery card shows:
+- A thumbnail of the image
+- The model used
+- A truncated version of the prompt
+
+From the card's action row you can:
+
+| Action | Effect |
+|--------|--------|
+| **Copy** (clipboard icon) | Copies the full prompt text to your clipboard so you can reuse or refine it. |
+| **Save** (floppy disk icon) | Saves the image to your device's photo library / media store. |
+| **Delete** (trash icon) | Removes the image from the gallery and deletes the file from internal storage. |
+
+Tap a thumbnail to open a full-screen preview with pinch-to-zoom support.
+
+<Note>
+  Images are stored in Rikka's private internal storage until you explicitly tap **Save** to export them to your device's media library. Uninstalling Rikka will permanently delete any images you have not saved externally.
+</Note>
+
+## Tips for Better Results
+
+<Accordion title="Writing effective prompts">
+  - Be specific about the subject: *"a red fox sitting in a snowy forest at dusk"* beats *"a fox"*.
+  - Name an art style or medium: *"oil painting"*, *"photorealistic"*, *"watercolour sketch"*.
+  - Describe the mood or atmosphere: *"dramatic lighting"*, *"soft pastel tones"*, *"cinematic composition"*.
+  - If the model supports negative prompts, use the settings sheet to exclude unwanted elements.
+</Accordion>
+
+<Accordion title="Choosing the right aspect ratio">
+  - **Square** — social media posts, avatars, product shots.
+  - **Landscape (16:9)** — desktop wallpapers, scene illustrations, banners.
+  - **Portrait (9:16)** — mobile wallpapers, posters, character art.
+</Accordion>
+
+<Accordion title="Managing API costs">
+  Image generation APIs typically charge per image generated. Keep the **Number of images** setting at `1` while iterating on your prompt, and increase it only once you are happy with the style and composition.
+</Accordion>

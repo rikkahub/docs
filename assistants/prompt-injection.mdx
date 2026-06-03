@@ -1,0 +1,161 @@
+---
+title: "Prompt Injections and Lorebooks Explained"
+sidebarTitle: "Prompt Injection"
+description: "Automatically insert context snippets into conversations using mode injections and lorebooks, with full control over position, priority, and triggers."
+---
+
+Prompt injections are snippets of text that Rikka automatically inserts into a conversation's context at a position you choose. They let you augment any assistant with additional instructions, reference material, or world-building lore — without cluttering the main system prompt. Lorebooks extend this idea by grouping multiple injection entries and activating each one only when specific keywords appear in the conversation.
+
+## Core concepts
+
+<CardGroup cols={2}>
+  <Card title="Mode Injection" icon="toggle-right">
+    A manually toggled snippet. Enable it on an assistant and it is always injected whenever that assistant is active. Ideal for "modes" like a formal writing style or a step-by-step reasoning format.
+  </Card>
+  <Card title="Lorebook" icon="book-open">
+    A named collection of entries. Each entry carries keywords; when those keywords appear in recent messages, the entry's content is automatically injected. Perfect for world-building reference material or project glossaries.
+  </Card>
+</CardGroup>
+
+## Injection positions
+
+Every injection targets a specific location in the message list. Choose the position that best matches the intent of your content.
+
+<Accordion title="Before System Prompt">
+  Inserts the content immediately before the existing system message. Use this for high-priority framing that should precede all other instructions.
+</Accordion>
+
+<Accordion title="After System Prompt">
+  Appends the content to the end of the system message. This is the most common position — it extends the system prompt without replacing it.
+</Accordion>
+
+<Accordion title="Top of Chat">
+  Places the content just before the first user message in the conversation history. Useful for setting scene context that appears once at the start.
+</Accordion>
+
+<Accordion title="Bottom of Chat">
+  Inserts the content immediately before the most recent user message. Good for reminders or dynamic context that should be fresh in the model's attention.
+</Accordion>
+
+<Accordion title="At Depth">
+  Inserts at a specific depth from the end of the message list (e.g., depth 4 = four messages from the bottom). Use this for precise placement relative to recent conversation turns.
+</Accordion>
+
+## Creating a mode injection
+
+<Steps>
+  <Step title="Open Settings">
+    Tap the settings icon from the main screen.
+  </Step>
+  <Step title="Navigate to Prompts">
+    Select **Prompts** (also accessible from the **Extensions** tab of an assistant via the **Go to Prompts** button).
+  </Step>
+  <Step title="Add a mode injection">
+    Tap **+** in the Mode Injections section. Give it a name, write the content, choose an injection position, set a role (User or Assistant), and assign a priority.
+  </Step>
+  <Step title="Save">
+    Tap **Save**. The injection is now available to attach to any assistant.
+  </Step>
+</Steps>
+
+## Creating a lorebook
+
+<Steps>
+  <Step title="Open Settings → Prompts">
+    Navigate to the Lorebooks section and tap **+** to create a new lorebook.
+  </Step>
+  <Step title="Name the lorebook">
+    Give it a descriptive name such as "Fantasy World Lore" or "Project Glossary".
+  </Step>
+  <Step title="Add entries">
+    Inside the lorebook, tap **+** to create an entry. For each entry, configure:
+    - **Keywords** — the words or patterns that trigger this entry.
+    - **Content** — the text to inject when triggered.
+    - **Injection position** and **role**.
+    - **Scan depth** — how many recent messages to check for keyword matches.
+    - **Use regex** — treat keywords as regular expressions instead of plain text.
+    - **Case sensitive** — whether matching respects letter case.
+    - **Constant active** — inject this entry unconditionally, regardless of keywords.
+  </Step>
+  <Step title="Save the lorebook">
+    Tap **Save**. The lorebook and all its entries are now ready to attach to assistants.
+  </Step>
+</Steps>
+
+<Tip>
+  Set **Constant active** on an entry if you want it to always inject, making it behave like a persistent mode injection that lives inside a lorebook for organisational purposes.
+</Tip>
+
+## Attaching injections to an assistant
+
+<Steps>
+  <Step title="Open the assistant's Extensions tab">
+    Go to **Settings → Assistants**, tap an assistant, and select the **Extensions** tab.
+  </Step>
+  <Step title="Enable mode injections">
+    Switch to the **Mode Injections** sub-tab and toggle on any injections you want active for this assistant.
+  </Step>
+  <Step title="Enable lorebooks">
+    Switch to the **Lorebooks** sub-tab and toggle on any lorebooks whose entries should be available in this assistant's conversations.
+  </Step>
+</Steps>
+
+## Key assistant fields
+
+<ParamField path="modeInjectionIds" type="set">
+  The set of mode injections that are active for this assistant. Any injection in this set is included in every conversation, regardless of message content.
+</ParamField>
+
+<ParamField path="lorebookIds" type="set">
+  The set of lorebooks attached to this assistant. Entries within those lorebooks fire automatically when their keywords are detected in recent messages.
+</ParamField>
+
+<ParamField path="allowConversationSystemPrompt" type="boolean" default="false">
+  When enabled, each individual conversation can override this assistant's system prompt. Turn this on if you want to customise the system prompt on a per-chat basis without changing the assistant's default.
+</ParamField>
+
+<ParamField path="allowConversationPromptInjection" type="boolean" default="false">
+  When enabled, each conversation can bind its own set of mode injections and lorebooks, overriding the assistant-level selection. Enable this when you want to mix and match injections dynamically per conversation.
+</ParamField>
+
+## Message template
+
+The **message template** wraps every user message before it is sent to the model. The default value is `{{message}}`, which sends the message as-is. You can add surrounding context, formatting, or persona hints around it.
+
+<ParamField path="messageTemplate" type="string" default="{{message}}">
+  A template string applied to each outgoing user message. Must include `{{message}}` somewhere so the user's actual text is passed through. Rikka will flag an error if this placeholder is missing.
+</ParamField>
+
+<Warning>
+  If `{{message}}` is missing from the message template, the user's actual message will not be included in the request. Rikka highlights this as an error in the editor — always verify the template before saving.
+</Warning>
+
+## Placeholder variables
+
+Placeholder variables can be used inside the **message template**, the **system prompt**, or any injection content. Rikka replaces them with live values at the time each message is sent. Both `{{variable}}` and `{variable}` syntax are accepted.
+
+| Variable | Description |
+|---|---|
+| `{{cur_date}}` | Current date, formatted for your locale |
+| `{{cur_time}}` | Current time, formatted for your locale |
+| `{{cur_datetime}}` | Current date and time, formatted for your locale |
+| `{{model_id}}` | The model ID string of the active model |
+| `{{model_name}}` | The display name of the active model |
+| `{{locale}}` | Your device's current locale (e.g. `English (United States)`) |
+| `{{timezone}}` | Your device's current time zone name |
+| `{{system_version}}` | Android version running on the device |
+| `{{device_info}}` | Device brand and model name |
+| `{{battery_level}}` | Current battery charge level as a percentage |
+| `{{nickname}}` | Your display nickname from **Settings → Display** |
+| `{{user}}` | Same as `{{nickname}}` — your display name |
+| `{{char}}` | The name of the current assistant |
+
+Tap any variable chip shown beneath the system prompt or template editor to insert it at the cursor position.
+
+## How injection priority works
+
+When multiple injections target the same position, Rikka sorts them by their priority value in descending order — higher number means injected first. Injections with the same role at the same position are merged into a single message to keep the conversation structure clean.
+
+<Note>
+  Rikka is careful not to insert injected messages between a user message and an immediately following assistant message that contains tool calls, because some providers (such as DeepSeek) require those two messages to be adjacent for correct reasoning.
+</Note>

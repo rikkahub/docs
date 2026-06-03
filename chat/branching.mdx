@@ -1,0 +1,71 @@
+---
+title: "Conversation Branching: Explore Alternate Chat Paths"
+sidebarTitle: "Branching"
+description: "Fork any conversation at a specific message to explore different answers, compare models, or A/B test prompts — all without losing prior context."
+---
+
+Branching lets you diverge a conversation from any point and explore a different direction without overwriting what came before. Every branch shares the full message history up to the split point, so the AI always has the context it needs.
+
+## What Branching Is
+
+Every message in Rikka is stored inside a **message node**. A node can hold multiple versions of the same message — for example, the original assistant reply and one or more regenerated alternatives. When you regenerate a response, a new version is added to the same node, and you can swipe left and right through the versions at that position without affecting any other part of the conversation.
+
+A **fork** (also called a branch) is something bigger: it creates a brand-new conversation that starts with a copy of every message up to and including the message you forked from. Both the original conversation and the fork are independent — editing one does not affect the other.
+
+## Creating a Branch
+
+<Steps>
+  <Step title="Find the message you want to fork from">
+    Scroll to any message in the conversation — it can be a user message or an assistant reply.
+  </Step>
+  <Step title="Open the message action menu">
+    Long-press the message, or tap the overflow (three-dot) menu that appears below it.
+  </Step>
+  <Step title="Tap Fork">
+    Select **Fork** from the action menu. Rikka copies all messages up to and including the selected one into a new conversation and navigates you there immediately.
+  </Step>
+  <Step title="Continue from the fork point">
+    You are now in a fresh conversation that picks up exactly where the fork was made. Send a different prompt, change the model, or adjust the assistant settings — none of these changes affect the original conversation.
+  </Step>
+</Steps>
+
+## Navigating Between Versions on the Same Node
+
+When a message node has more than one version (created by **Regenerate** or **Edit**), a small branch navigator appears inline with that message. It shows the current version number and the total, for example **2 / 3**.
+
+- Tap the **left arrow** (←) to go to the previous version.
+- Tap the **right arrow** (→) to go to the next version.
+
+The arrows dim when you are already at the first or last version. All subsequent messages in the conversation update automatically to reflect the selected branch of history — Rikka always shows the path formed by the currently selected version at each node.
+
+<Tip>
+  Use branching to A/B test prompts or compare how different models answer the same question. Fork the conversation at your user message, switch models, and send the same question — then compare both forks side by side.
+</Tip>
+
+## How Branched Conversations Are Stored
+
+<CardGroup cols={2}>
+  <Card title="Shared history up to the branch point" icon="code-branch">
+    The forked conversation contains full copies of every message up to the split. Editing a message in the fork does not modify the original conversation.
+  </Card>
+  <Card title="Independent from that point on" icon="arrows-split-up-and-left">
+    Any new messages sent after the fork exist only in that conversation. The original continues on its own timeline.
+  </Card>
+  <Card title="Files are duplicated" icon="copy">
+    Any image or document attachments in the copied messages are duplicated into the fork's storage so that deleting the original conversation does not break the fork.
+  </Card>
+  <Card title="Same assistant and settings" icon="robot">
+    The fork inherits the original conversation's assistant, system prompt overrides, injected modes, and lorebook bindings, giving you a consistent starting point.
+  </Card>
+</CardGroup>
+
+## Why Branching Is Useful
+
+- **Exploring different answers** — Not happy with a response? Fork from your last user message, resend it, and compare both answers without losing either.
+- **Comparing models** — Fork the conversation twice from the same point and set each fork to a different model. Run the same follow-up question in each to directly compare quality or style.
+- **Safe experimentation** — Try a risky or speculative prompt in a fork. If the conversation goes off track you can simply abandon the fork and return to the original.
+- **Sharing a subset** — Fork at an early message to create a clean, shorter version of a conversation you want to share, without exposing the full history.
+
+<Note>
+  Branches are stored locally like any other conversation. They appear in your conversation history alongside originals, sorted by last updated time. You can rename, pin, or delete a branch the same way you manage any other conversation.
+</Note>

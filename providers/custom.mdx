@@ -1,0 +1,151 @@
+---
+title: "Custom Providers — OpenAI-Compatible APIs and Local Models"
+sidebarTitle: "Custom"
+description: "Connect Rikka to any OpenAI-compatible API endpoint, including OpenRouter, local Ollama, self-hosted proxies, and other third-party services."
+---
+
+Rikka's OpenAI provider type is not limited to OpenAI itself. Because the OpenAI Chat Completions API has become a universal standard, you can point it at virtually any compatible service — model aggregators such as OpenRouter, a local Ollama instance running entirely on your device or home network, a corporate proxy, or any self-hosted open-source inference server. All you need to do is create an OpenAI provider, swap the base URL, and add the model IDs your endpoint exposes.
+
+## Connect to a custom endpoint
+
+<Steps>
+  <Step title="Add an OpenAI provider">
+    Go to **Settings → Providers**, tap **Add Provider**, and select **OpenAI**.
+  </Step>
+  <Step title="Change the base URL">
+    Replace the default `https://api.openai.com/v1` with the base URL of your service. See the examples below for common endpoints.
+  </Step>
+  <Step title="Enter your API key">
+    Paste the API key your service issued. Some local services (such as Ollama) do not require a key — you can enter any placeholder value such as `ollama` in that case.
+  </Step>
+  <Step title="Add custom headers (if needed)">
+    Some services require extra HTTP headers. Open the **Custom Headers** section and add any required key-value pairs.
+  </Step>
+  <Step title="Add models">
+    Tap **Add Model** and enter the model IDs your endpoint supports. For aggregators like OpenRouter, use the full model slug (for example `openai/gpt-4o` or `anthropic/claude-opus-4-5`).
+  </Step>
+  <Step title="Save">
+    Tap **Save**. Your custom provider is now available in the model picker.
+  </Step>
+</Steps>
+
+## Popular endpoint examples
+
+<CardGroup cols={2}>
+  <Card title="OpenRouter" icon="arrows-repeat">
+    Route requests to 100+ models from multiple providers through a single API key.
+
+    **Base URL:** `https://openrouter.ai/api/v1`
+
+    **Required headers:**
+    - `HTTP-Referer`: your app or website URL (identifies your app to OpenRouter)
+    - `X-Title`: a short display name for your app (optional but recommended)
+  </Card>
+  <Card title="Ollama (local)" icon="server">
+    Run open-source models entirely on your device or local network — no API key required.
+
+    **Base URL:** `http://localhost:11434/v1`
+
+    **API Key:** any non-empty string, for example `ollama`
+
+    Start Ollama and pull a model (`ollama pull llama3.2`) before adding it in Rikka.
+  </Card>
+  <Card title="LM Studio (local)" icon="desktop">
+    Serve local GGUF models from your PC to your Android device over your home network.
+
+    **Base URL:** `http://YOUR_PC_IP:1234/v1`
+
+    **API Key:** `lm-studio` (or any placeholder)
+  </Card>
+  <Card title="Custom proxy" icon="shuffle">
+    Route requests through your own server for key management, logging, or rate limiting.
+
+    **Base URL:** your proxy URL, for example `https://my-proxy.example.com/v1`
+
+    Add any authentication headers your proxy requires in **Custom Headers**.
+  </Card>
+</CardGroup>
+
+## Custom HTTP headers
+
+Open the **Custom Headers** section inside the provider detail screen to add arbitrary HTTP headers to every request this provider sends. Each entry is a key-value pair.
+
+Common use cases:
+
+| Header | Value | Purpose |
+|---|---|---|
+| `HTTP-Referer` | `https://yoursite.com` | Required by OpenRouter to identify your application |
+| `X-Title` | `Rikka` | Optional display name shown in OpenRouter usage dashboards |
+| `X-Custom-Auth` | `Bearer token` | Alternative authentication for proxies that don't use `Authorization` |
+
+<Note>
+  Rikka always adds an `Authorization: Bearer <api-key>` header automatically. You do not need to add it manually in the custom headers section.
+</Note>
+
+## Custom request body fields
+
+The **Custom Body** section lets you inject extra JSON fields into every chat request body. This is the right place for provider-specific parameters that Rikka does not expose natively.
+
+Examples:
+
+| Key | Example value | Purpose |
+|---|---|---|
+| `safe_prompt` | `true` | Enable Mistral's safe-mode prompt injection |
+| `transforms` | `["middle-out"]` | OpenRouter context compression |
+| `provider` | `{"order": ["Anthropic"]}` | OpenRouter provider routing preference |
+
+## Balance checking for custom providers
+
+Many aggregators and proxies expose a credits or balance endpoint. Enable **Balance Checking** in the provider settings and configure it to match your service.
+
+<Tabs>
+  <Tab title="OpenRouter">
+    - **API Path:** `/credits`
+    - **Result Path:** `data.total_credits - data.total_usage`
+  </Tab>
+  <Tab title="DeepSeek">
+    - **API Path:** `/user/balance`
+    - **Result Path:** `balance_infos[0].total_balance`
+  </Tab>
+  <Tab title="SiliconFlow">
+    - **API Path:** `/user/info`
+    - **Result Path:** `data.totalBalance`
+  </Tab>
+</Tabs>
+
+## Share your provider config via QR code
+
+Once you have a custom provider configured, you can share its settings with other Rikka users without them having to re-enter every field manually.
+
+<Steps>
+  <Step title="Open the provider detail screen">
+    Tap your custom provider in **Settings → Providers**.
+  </Step>
+  <Step title="Tap the Share button">
+    Tap the **Share** icon in the top-right corner of the provider detail screen.
+  </Step>
+  <Step title="Share the QR code or text string">
+    A bottom sheet appears with a QR code. The recipient can scan it with Rikka to import the provider instantly. You can also tap the share icon in the sheet to send the encoded string through any messaging app.
+  </Step>
+</Steps>
+
+<Warning>
+  The QR code and share string include your API key. Only share them with people you trust, and rotate or revoke the key from your provider's dashboard if it is ever compromised.
+</Warning>
+
+## Troubleshooting
+
+<CardGroup cols={2}>
+  <Card title="401 Unauthorized" icon="lock">
+    Your API key is missing or incorrect. Double-check the key and make sure there are no leading or trailing spaces.
+  </Card>
+  <Card title="404 Not Found" icon="circle-question">
+    The base URL or chat completions path is wrong. Confirm the exact URL format in your provider's documentation.
+  </Card>
+  <Card title="Model not found" icon="robot">
+    The model ID you added doesn't match what the endpoint expects. Check the provider's model list and copy the exact slug.
+  </Card>
+  <Card title="Connection refused (local)" icon="wifi-slash">
+    Ollama or LM Studio isn't running, or your Android device can't reach the PC's IP. Make sure both devices are on the same Wi-Fi network and the service is started.
+  </Card>
+</CardGroup>

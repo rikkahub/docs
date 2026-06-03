@@ -1,0 +1,94 @@
+---
+title: "Anthropic Claude Provider — All Claude Model Tiers"
+sidebarTitle: "Claude"
+description: "Configure Anthropic Claude in Rikka to access Claude models, with optional prompt caching to reduce latency and costs on long conversations."
+---
+
+The Claude provider type connects Rikka directly to Anthropic's API. In addition to the standard connection options, Rikka exposes Anthropic's **prompt caching** feature, which stores repeated prefix content (such as long system prompts or document contexts) between turns so the API does not re-process them on every request. This can significantly reduce both cost and time-to-first-token on lengthy conversations.
+
+## Add a Claude provider
+
+<Steps>
+  <Step title="Open provider settings">
+    Go to **Settings → Providers** and tap **Add Provider**.
+  </Step>
+  <Step title="Choose Claude">
+    Select **Claude** from the provider type list.
+  </Step>
+  <Step title="Enter your API key">
+    Paste your Anthropic API key into the **API Key** field. Create or manage keys at [console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys).
+  </Step>
+  <Step title="Confirm the base URL">
+    The base URL defaults to `https://api.anthropic.com/v1`. Leave it unchanged for a direct Anthropic connection.
+  </Step>
+  <Step title="Configure prompt caching (optional)">
+    If you want to reduce API costs on long conversations, enable **Prompt Caching** and choose a TTL.
+  </Step>
+  <Step title="Add Claude models">
+    Tap **Add Model**, enter a model ID (for example `claude-opus-4-5` or `claude-sonnet-4-5`), set its display name and capabilities, then save.
+  </Step>
+  <Step title="Save">
+    Tap **Save** to apply your changes.
+  </Step>
+</Steps>
+
+## Configuration reference
+
+### Core fields
+
+<ParamField path="apiKey" type="string" required>
+  Your Anthropic API key. Rikka stores it locally and sends it only to the configured base URL using the `x-api-key` header as required by the Anthropic API.
+</ParamField>
+
+<ParamField path="baseUrl" type="string" default="https://api.anthropic.com/v1">
+  The root URL for the Anthropic API. Change this only if you are routing traffic through a proxy or an Anthropic-compatible third-party endpoint.
+</ParamField>
+
+### Prompt caching
+
+Anthropic's prompt caching saves the KV cache of a message prefix on their servers, so subsequent turns that re-send the same prefix are billed at a reduced cache-read rate and return faster.
+
+<ParamField path="promptCaching" type="boolean" default="false">
+  Enable prompt caching for this provider. When turned on, Rikka marks eligible message prefixes with the `cache_control` field in the API request.
+</ParamField>
+
+<ParamField path="promptCacheTtl" type="enum" default="FIVE_MINUTES">
+  How long Anthropic retains the cached prefix on their servers.
+
+  | Value | Duration | When to use |
+  |---|---|---|
+  | `FIVE_MINUTES` | 5 minutes | Short to medium conversations where cache reuse is likely within the same session |
+  | `ONE_HOUR` | 1 hour | Long research or coding sessions where you return to the same context repeatedly |
+</ParamField>
+
+<Note>
+  Prompt caching is available on Claude 3.5 Sonnet, Claude 3.5 Haiku, Claude 3 Opus, and newer models. Check [docs.anthropic.com/en/docs/build-with-claude/prompt-caching](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching) for full eligibility details and pricing.
+</Note>
+
+## Recommended Claude models
+
+| Model ID | Best for |
+|---|---|
+| `claude-opus-4-5` | Deeply complex tasks, extended reasoning |
+| `claude-sonnet-4-5` | Balanced performance and cost |
+| `claude-haiku-3-5` | Fast, lightweight tasks |
+
+<Tip>
+  Always use the full versioned model ID (for example `claude-sonnet-4-5`) rather than an alias like `claude-3-5-sonnet-latest` so Rikka displays the correct model name and capabilities in the picker.
+</Tip>
+
+## How prompt caching works in practice
+
+When you have a long system prompt or paste a large document into a conversation, Anthropic charges full input-token rates the first time it processes that content. With caching enabled, subsequent turns in the same conversation re-send the same prefix but pay only the cache-read rate — typically around 10 % of the standard input price — and receive a faster response because the model skips re-ingesting the cached tokens.
+
+<Tabs>
+  <Tab title="Caching off">
+    Every turn sends the full conversation history. All tokens are billed at the standard input rate. Use this if you have short conversations or if caching is not supported on your chosen model.
+  </Tab>
+  <Tab title="Caching on — 5 minutes">
+    Anthropic retains the cache for 5 minutes after the last use. Ideal for active back-and-forth sessions where you send messages frequently.
+  </Tab>
+  <Tab title="Caching on — 1 hour">
+    The cache persists for 1 hour after the last use. Best for longer work sessions where you might step away for a few minutes between turns.
+  </Tab>
+</Tabs>

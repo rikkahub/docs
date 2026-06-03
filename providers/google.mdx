@@ -1,0 +1,106 @@
+---
+title: "Google Gemini Provider — Set Up Gemini and Vertex AI"
+sidebarTitle: "Google"
+description: "Connect Rikka to Google's Gemini models using the Gemini API or Vertex AI with a service account for enterprise and private cloud deployments."
+---
+
+The Google provider type connects Rikka to Google's generative AI platform. You can use either the public **Gemini API** — the quickest option for personal use — or **Vertex AI** with a Google Cloud service account for enterprise or private-cloud deployments. Both paths support the full range of Gemini models including Gemini 2.5 Pro and Gemini 2.5 Flash.
+
+## Add a Google provider
+
+<Steps>
+  <Step title="Open provider settings">
+    Go to **Settings → Providers** and tap **Add Provider**.
+  </Step>
+  <Step title="Choose Google">
+    Select **Google** from the provider type list.
+  </Step>
+  <Step title="Enter your API key">
+    Paste your Gemini API key into the **API Key** field. You can create a free key at [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey). Leave this field empty if you are using a Vertex AI service account instead.
+  </Step>
+  <Step title="Confirm the base URL">
+    The base URL defaults to `https://generativelanguage.googleapis.com/v1beta`. Leave it unchanged for the standard Gemini API.
+  </Step>
+  <Step title="Add Gemini models">
+    Tap **Add Model**, enter the model ID (for example `gemini-2.5-pro` or `gemini-2.5-flash`), set its display name and capabilities, then save.
+  </Step>
+  <Step title="Save">
+    Tap **Save** to apply your changes.
+  </Step>
+</Steps>
+
+## Configuration reference
+
+### Core fields
+
+<ParamField path="apiKey" type="string" required>
+  Your Gemini API key from Google AI Studio. Required when **Vertex AI** is disabled. If you are authenticating via a Vertex AI service account, leave this blank and fill in the service account fields instead.
+</ParamField>
+
+<ParamField path="baseUrl" type="string" default="https://generativelanguage.googleapis.com/v1beta">
+  The root URL of the Google generative language API. Change this only if you are routing requests through a custom proxy.
+</ParamField>
+
+### Vertex AI
+
+Enable Vertex AI to route requests through your Google Cloud project instead of the public Gemini API. Vertex AI gives you VPC-SC controls, data-residency guarantees, and enterprise SLAs.
+
+<ParamField path="vertexAI" type="boolean" default="false">
+  Switch from the public Gemini API to Google Cloud Vertex AI. When enabled, you must also configure the service account fields below.
+</ParamField>
+
+<ParamField path="useServiceAccount" type="boolean" default="false">
+  Authenticate to Vertex AI using a Google Cloud service account rather than a simple API key. Requires the four service account fields below.
+</ParamField>
+
+<ParamField path="privateKey" type="string">
+  The PEM-encoded private key from your service account JSON file. Copy the value of the `private_key` field, including the `-----BEGIN PRIVATE KEY-----` and `-----END PRIVATE KEY-----` delimiters. Only required when **Use Service Account** is enabled.
+</ParamField>
+
+<ParamField path="serviceAccountEmail" type="string">
+  The `client_email` value from your service account JSON file (for example `my-sa@my-project.iam.gserviceaccount.com`). Only required when **Use Service Account** is enabled.
+</ParamField>
+
+<ParamField path="location" type="string" default="us-central1">
+  The Google Cloud region where your Vertex AI endpoint is hosted. Change this to match the region you selected when enabling the Vertex AI API in your project. Only required when **Use Service Account** is enabled.
+</ParamField>
+
+<ParamField path="projectId" type="string">
+  Your Google Cloud project ID (not the project number). Find it on the Google Cloud Console home page. Only required when **Use Service Account** is enabled.
+</ParamField>
+
+## Set up Vertex AI with a service account
+
+<Steps>
+  <Step title="Create a service account">
+    In the [Google Cloud Console](https://console.cloud.google.com/), go to **IAM & Admin → Service Accounts** and create a new account with the **Vertex AI User** role.
+  </Step>
+  <Step title="Generate a key">
+    Open the service account, go to the **Keys** tab, click **Add Key → Create new key**, and choose **JSON**. Download the file.
+  </Step>
+  <Step title="Enable Vertex AI in Rikka">
+    In the Google provider settings, turn on **Vertex AI** and **Use Service Account**.
+  </Step>
+  <Step title="Fill in the service account details">
+    Copy `private_key`, `client_email`, and your project ID from the downloaded JSON file into the corresponding fields in Rikka. Set the location to match your Vertex AI region.
+  </Step>
+  <Step title="Add models and save">
+    Add your Gemini model IDs and tap **Save**.
+  </Step>
+</Steps>
+
+<Warning>
+  Your service account private key grants access to your Google Cloud project. Store it carefully and do not share your device's Rikka export with others if it contains a service account key.
+</Warning>
+
+## Recommended Gemini models
+
+| Model ID | Best for |
+|---|---|
+| `gemini-2.5-pro` | Complex reasoning, long context, code |
+| `gemini-2.5-flash` | Fast responses, cost-efficient tasks |
+| `gemini-2.0-flash` | Low latency, multimodal inputs |
+
+<Tip>
+  Check [ai.google.dev/gemini-api/docs/models](https://ai.google.dev/gemini-api/docs/models) for the latest list of available model IDs.
+</Tip>

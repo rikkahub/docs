@@ -1,0 +1,132 @@
+---
+title: "Set Up MCP Servers in Rikka for External Tool Access"
+sidebarTitle: "MCP"
+description: "Add and configure MCP servers in Rikka to give your AI assistants access to external tools, APIs, and real-world data sources on Android."
+---
+
+Model Context Protocol (MCP) is an open standard that lets AI models securely access external tools, APIs, and data sources. Rikka implements MCP as a first-class feature, so you can wire up any compliant MCP server and immediately expose its tools to your assistants — from web search and code execution to database queries and custom business logic.
+
+## Adding an MCP Server
+
+<Steps>
+  <Step title="Open MCP Settings">
+    Navigate to **Settings → MCP**. You'll see a list of all configured servers along with their current connection status (Idle, Connecting, Connected, Reconnecting, or Error).
+  </Step>
+  <Step title="Tap Add Server">
+    Tap the **+** button in the top-right corner. Choose the transport type that matches your server.
+  </Step>
+  <Step title="Configure the server">
+    Fill in the server details (see [Transport Types](#transport-types) and [Server Options](#server-options) below), then save.
+  </Step>
+  <Step title="Wait for connection">
+    Rikka connects automatically and syncs the list of tools the server exposes. A green **Connected** indicator confirms the handshake succeeded. If the connection drops, Rikka retries automatically with exponential back-off before marking the server as errored.
+  </Step>
+</Steps>
+
+<Note>
+  MCP servers must be publicly reachable on the internet or on the same local network as your Android device. Servers behind a firewall or corporate VPN require a VPN connection on the device before Rikka can reach them.
+</Note>
+
+## Transport Types
+
+Rikka supports two MCP transport mechanisms. Both require only a URL endpoint — choose whichever your server advertises.
+
+<CardGroup cols={2}>
+  <Card title="SSE (Server-Sent Events)" icon="signal-stream">
+    The original MCP transport. The client opens a persistent HTTP connection and the server pushes events over it. Provide the full SSE endpoint URL, for example `https://mcp.example.com/sse`.
+  </Card>
+  <Card title="Streamable HTTP" icon="arrows-up-down">
+    The newer, recommended transport defined in the MCP spec. Uses standard HTTP requests with chunked streaming. Provide the base URL of the server, for example `https://mcp.example.com/mcp`.
+  </Card>
+</CardGroup>
+
+## Server Options
+
+Each server has a set of common options you configure when adding or editing it.
+
+<ParamField body="name" type="string" required>
+  A human-readable display name for this server. Appears in the MCP server list and in the assistant settings picker.
+</ParamField>
+
+<ParamField body="enable" type="boolean" default="true">
+  Toggle this server on or off without deleting it. When disabled, Rikka closes the connection and does not expose the server's tools to any assistant.
+</ParamField>
+
+<ParamField body="url" type="string" required>
+  The full URL of the MCP endpoint. For SSE servers this is typically a path ending in `/sse`; for Streamable HTTP servers it is the base MCP path.
+</ParamField>
+
+<ParamField body="headers" type="list of key-value pairs">
+  Custom HTTP headers sent with every request to this server. Use this to pass authentication tokens, API keys, or any other request metadata your server requires. Add each header as a name-value pair, for example `Authorization: Bearer <token>`.
+</ParamField>
+
+## Per-Tool Options
+
+After Rikka connects and syncs, it lists every tool the server exposes. You can control each tool individually.
+
+<ParamField body="enable" type="boolean" default="true">
+  Enable or disable a specific tool from this server. Disabled tools are hidden from the assistant's tool list and are never called, even if the server is connected.
+</ParamField>
+
+<ParamField body="needsApproval" type="boolean" default="false">
+  When turned on, Rikka shows a confirmation dialog before executing this tool. Use this for any tool that performs irreversible actions — file writes, emails, purchases — so you stay in control of what the AI actually does.
+</ParamField>
+
+<Tip>
+  Enable **Needs Approval** on any tool that modifies data or triggers external side-effects. You can always approve quickly, and it prevents the model from acting autonomously in ways you didn't intend.
+</Tip>
+
+## Attaching MCP Servers to an Assistant
+
+Adding a server to Rikka's global list does not automatically expose it to your assistants. You must opt each assistant in explicitly.
+
+<Steps>
+  <Step title="Open assistant settings">
+    Long-press an assistant on the home screen, or tap the assistant name and then the **Edit** (pencil) icon to open its settings.
+  </Step>
+  <Step title="Find the MCP Servers section">
+    Scroll down to **MCP Servers**. You'll see all servers that are currently enabled in your global MCP list.
+  </Step>
+  <Step title="Toggle the servers you want">
+    Enable the servers whose tools this assistant should have access to. Only tools from servers ticked here will appear in the assistant's tool calls.
+  </Step>
+</Steps>
+
+## Importing Server Configs via JSON
+
+If a service publishes a ready-made MCP config file, you can import it directly instead of typing in all the details manually.
+
+<Steps>
+  <Step title="Copy or download the JSON config">
+    The config should be a JSON object describing one or more MCP servers in Rikka's config schema.
+  </Step>
+  <Step title="Open MCP Settings and tap Import">
+    In **Settings → MCP**, tap the import icon and paste or load the JSON. Rikka validates and merges the servers into your existing list.
+  </Step>
+</Steps>
+
+A minimal single-server SSE config looks like this:
+
+```json
+{
+  "type": "sse",
+  "commonOptions": {
+    "name": "My MCP Server",
+    "enable": true,
+    "headers": [
+      ["Authorization", "Bearer my-secret-token"]
+    ]
+  },
+  "url": "https://mcp.example.com/sse"
+}
+```
+
+## Connection Status Reference
+
+| Status | Meaning |
+|--------|---------|
+| **Idle** | Server is disabled or has not yet been started. |
+| **Connecting** | Rikka is establishing the initial connection. |
+| **Connected** | Handshake complete; tools are available. |
+| **Reconnecting** | Connection was lost; Rikka is retrying with exponential back-off. |
+| **Error** | All retry attempts failed. Check the URL, headers, and server availability. |

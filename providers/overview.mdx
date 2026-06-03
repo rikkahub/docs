@@ -1,0 +1,63 @@
+---
+title: "AI Providers — Connect to Your Preferred AI Services"
+sidebarTitle: "Overview"
+description: "Learn how to add, configure, and switch between multiple AI providers in Rikka, including OpenAI, Google Gemini, Anthropic Claude, and custom endpoints."
+---
+
+Rikka lets you connect to multiple AI services at the same time, so you can pick the right model for every conversation without leaving the app. Each connection you configure is called a **provider** — it stores the API key, base URL, and any additional options needed to talk to a specific AI service. You can add as many providers as you like, enable or disable them individually, and switch between their models directly from the chat screen.
+
+## Supported provider types
+
+Rikka ships with first-class support for three provider types and a flexible custom option that works with any OpenAI-compatible endpoint.
+
+<CardGroup cols={2}>
+  <Card title="OpenAI" icon="openai" href="/providers/openai">
+    Connect to OpenAI's API — including GPT-4o, o-series reasoning models, and the Responses API — or any service that mirrors the Chat Completions endpoint.
+  </Card>
+  <Card title="Google Gemini" icon="google" href="/providers/google">
+    Access Gemini models directly through the Google AI API, or use Vertex AI with a service account for enterprise deployments.
+  </Card>
+  <Card title="Anthropic Claude" icon="robot" href="/providers/claude">
+    Chat with Claude models via the Anthropic API, with optional prompt caching to reduce latency and cost on long conversations.
+  </Card>
+  <Card title="Custom / OpenAI-compatible" icon="plug" href="/providers/custom">
+    Point Rikka at OpenRouter, a local Ollama instance, a self-hosted proxy, or any other service that speaks the OpenAI Chat Completions protocol.
+  </Card>
+</CardGroup>
+
+## Add your first provider
+
+<Steps>
+  <Step title="Open Settings">
+    Tap the **Settings** icon in the bottom navigation bar to open the settings screen.
+  </Step>
+  <Step title="Go to Providers">
+    Select **Providers** from the settings list to see all configured providers.
+  </Step>
+  <Step title="Add a provider">
+    Tap **Add Provider**, choose a provider type, fill in your API key and any other required fields, then save.
+  </Step>
+  <Step title="Add models">
+    Inside the provider detail screen, add the model IDs you want to use. Each model appears in the model picker when you start or switch a conversation.
+  </Step>
+</Steps>
+
+## Manage multiple providers
+
+You can configure as many providers as you need. Use the toggle on each provider card to enable or disable it without deleting your settings. Disabled providers and their models are hidden from the model picker.
+
+<Tip>
+  If you want to compare responses from different providers, add each one separately and switch models between conversations — no re-entering credentials required.
+</Tip>
+
+## Share provider configs with QR codes
+
+Every provider detail screen has a **Share** button that encodes your provider configuration (API key, base URL, and settings — without any added models) into a QR code. Another Rikka user can scan that QR code to import the same provider setup instantly. You can also copy the encoded string and send it over any messaging app.
+
+<Warning>
+  The QR code and share string contain your API key. Only share them with people you trust, and revoke the key from your provider's dashboard if it is ever exposed.
+</Warning>
+
+## Balance checking
+
+Providers that support a balance or credits endpoint can show your remaining credit in the provider detail screen. Enable **Balance Checking** in the provider settings and supply the API path and the JSON field path that holds the balance value. See the individual provider pages for provider-specific examples.

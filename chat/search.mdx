@@ -1,0 +1,160 @@
+---
+title: "Web Search: Ground AI Answers in Live Search Results"
+sidebarTitle: "Web Search"
+description: "Enable Rikka's built-in web search to inject real-time results into any conversation, configure your preferred search service, and use the Search page."
+---
+
+Rikka includes a built-in web search capability that lets any AI model access live information from the web. When you enable web search before sending a message, Rikka automatically calls your configured search service, retrieves relevant results, and injects them into the conversation context before the model generates its reply.
+
+## Enabling Web Search for a Message
+
+The web search toggle lives in the **input toolbar** — the row of icons just above the text field.
+
+<Steps>
+  <Step title="Tap the search toggle">
+    Tap the globe or search icon in the toolbar to enable web search. The icon highlights to indicate it is active.
+  </Step>
+  <Step title="Type your message">
+    Write your question or prompt as normal. You do not need to phrase it differently — Rikka extracts the search query automatically.
+  </Step>
+  <Step title="Send the message">
+    Tap send. Rikka calls the search service, retrieves results, and injects them as context before asking the model to respond. You will see a brief processing indicator while the search is in progress.
+  </Step>
+  <Step title="Review the cited sources">
+    The assistant's reply includes references to the search results. Tap any linked URL to open it in your browser.
+  </Step>
+</Steps>
+
+<Note>
+  Web search is powered by a **tool call** injected into the conversation. The model decides when to invoke the `search_web` tool based on your prompt. If the model determines that search is unnecessary for a given question, it may skip the web call and answer from its training data.
+</Note>
+
+## Supported Search Services
+
+Rikka supports a wide range of search providers. Configure one or more and select which one to use as the active service.
+
+<Tabs>
+  <Tab title="General purpose">
+    | Service | Notes |
+    |---------|-------|
+    | **Bing** | Uses the Microsoft Bing Search API. No additional configuration required beyond an API key. |
+    | **Brave** | Privacy-focused search via the Brave Search API. |
+    | **RikkaHub** | Rikka's own search API. Requires a RikkaHub API key and supports configurable search depth and AI-generated answers. |
+    | **SearXNG** | Self-hosted meta-search engine. Provide your instance URL, optional credentials, and preferred search engines. |
+    | **Bocha (博查)** | Chinese-language search service with optional AI-generated summaries. |
+    | **Metaso (秘塔)** | Chinese AI-powered search service. |
+  </Tab>
+  <Tab title="AI-powered">
+    | Service | Notes |
+    |---------|-------|
+    | **Tavily** | AI search API optimised for LLM use. Supports `general`, `news`, and `finance` topic modes, plus standard/advanced depth. |
+    | **Exa** | Semantic search API built for AI applications. |
+    | **Perplexity** | Uses Perplexity's search-augmented models. Optional max-tokens settings for replies and per-page content. |
+    | **LinkUp** | Configurable search depth (standard / deep). |
+    | **Grok** | xAI's Grok model with live web search. Supports custom API URL, model choice, and a configurable system prompt. |
+    | **Tinyfish** | Lightweight AI search service. |
+  </Tab>
+  <Tab title="Scraping & crawling">
+    | Service | Notes |
+    |---------|-------|
+    | **Firecrawl** | Web crawling API that returns structured Markdown from any URL. |
+    | **Jina** | Reader API (`r.jina.ai`) for scraping and search API (`s.jina.ai`) for querying. Both URLs are configurable. |
+    | **Ollama** | Run a local search-capable Ollama model as a search backend. |
+  </Tab>
+  <Tab title="Specialised">
+    | Service | Notes |
+    |---------|-------|
+    | **Zhipu (智谱)** | Zhipu AI's search tool. |
+    | **Custom JS** | Write your own search (and optionally scrape) logic in JavaScript. Rikka executes the script with a sandboxed `fetch()` helper. |
+  </Tab>
+</Tabs>
+
+## Configuring a Search Service
+
+<Steps>
+  <Step title="Open Settings">
+    Tap the **Settings** gear icon in the history drawer (bottom-right of the drawer action row).
+  </Step>
+  <Step title="Navigate to Search">
+    Select **Search** from the settings list.
+  </Step>
+  <Step title="Add a service">
+    Tap **Add** and choose a service from the list. Each service shows a description and a link to obtain an API key where required.
+  </Step>
+  <Step title="Enter credentials">
+    Fill in the API key and any service-specific options (depth, language, model, custom URL, etc.).
+  </Step>
+  <Step title="Set as active">
+    If you have multiple services configured, tap the one you want to use to select it as the active search service. The active service is shown in the search toggle tooltip in the chat input toolbar.
+  </Step>
+</Steps>
+
+### Common Configuration Options
+
+Different services expose different settings, but you will commonly see:
+
+| Option | Description |
+|--------|-------------|
+| **API Key** | Your authentication key from the provider. Some services (e.g., Bing, SearXNG) may work without one or use a different auth method. |
+| **Result count** | How many search results to fetch and inject into context. More results give the model more information but consume more tokens. |
+| **Depth** | For services like Tavily and LinkUp, controls whether to perform a shallow or deep crawl of results. |
+| **Language** | Restricts results to a specific language. Useful for SearXNG and some other services. |
+| **Include / exclude domains** | Available on select services to whitelist or blacklist specific websites. |
+| **Safe search** | Enables content filtering where supported. |
+
+## How Search Results Are Injected
+
+When you send a message with web search enabled, Rikka follows this flow:
+
+1. The `search_web` tool is registered with the model alongside your message.
+2. If the model decides to search, it emits a tool call with a `query` parameter.
+3. Rikka calls the active search service with that query and the configured result count.
+4. The results — including titles, URLs, and text snippets — are returned to the model as tool output.
+5. Some services also support a `scrape_web` tool call that lets the model fetch the full content of individual pages.
+6. The model integrates the results into its final response.
+
+<Note>
+  The search step happens silently in the background. A processing status message appears briefly in the chat list while Rikka is fetching results. The tool call and its output are visible in the chain-of-thought section if your model exposes reasoning steps.
+</Note>
+
+## The Dedicated Search Page
+
+In addition to per-message web search, Rikka has a full-screen **Search** page for research-oriented sessions.
+
+Open the history drawer and tap the **Search** icon (magnifying glass) in the drawer actions row. The Search page provides:
+
+- A persistent search bar that lets you type a query and retrieve web results directly.
+- Result cards showing the title, a text snippet, and the source URL.
+- Tap any result card to open that URL or use it as context in a new chat.
+
+<Tip>
+  Use the Search page when you want to browse and compare multiple results before handing them off to the AI. It gives you more control than the automatic in-conversation search mode.
+</Tip>
+
+## Custom JS Search Service
+
+If none of the built-in services fit your needs, use the **Custom JS** option to write your own search logic.
+
+```javascript
+// Implement search(query, resultSize) function
+// Use fetch(url, options?) for HTTP requests
+// fetch() returns { status, ok, text(), json() }
+// Return { items: [{ title, url, text }], answer?: string }
+
+function search(query, resultSize) {
+  const encoded = encodeURIComponent(query);
+  const res = fetch("https://example.com/search?q=" + encoded + "&limit=" + resultSize);
+  const data = res.json();
+  return {
+    items: data.results.map(function(r) {
+      return { title: r.title, url: r.url, text: r.snippet };
+    })
+  };
+}
+```
+
+You can also provide an optional `scrape(urls)` function to implement custom page extraction. Rikka's sandboxed environment provides a synchronous `fetch()` helper — no `async`/`await` is needed.
+
+<Warning>
+  Custom JS scripts run inside a restricted sandbox. Network access via `fetch()` is available, but the script cannot access device storage, Android APIs, or any Rikka internals.
+</Warning>

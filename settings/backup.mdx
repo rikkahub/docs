@@ -1,0 +1,195 @@
+---
+title: "Back Up and Restore Your Rikka Conversations and Settings"
+sidebarTitle: "Backup"
+description: "Export conversations and settings to a local file, sync automatically to WebDAV or S3-compatible storage, and set reminders so you never lose your data."
+---
+
+Rikka stores all your conversations, settings, and provider configurations on-device. Use the Backup page to protect that data: export a portable ZIP file for manual safekeeping, push incremental backups to a WebDAV or S3 server, or schedule reminders that prompt you to back up regularly. Navigate to **Settings → Backup** to get started.
+
+The Backup page is organized into four tabs: **WebDAV**, **S3**, **Import/Export**, and **Reminder**.
+
+---
+
+## Manual Import / Export
+
+The **Import/Export** tab lets you create a complete snapshot of your data and restore it whenever you need — no cloud account required.
+
+### Export your data
+
+<Steps>
+  <Step title="Open Settings → Backup → Import/Export">
+    Tap the **Import/Export** tab.
+  </Step>
+  <Step title="Tap Export">
+    Tap the **Export** item under *Local Backup / Export*. The system file picker opens.
+  </Step>
+  <Step title="Choose a save location">
+    Navigate to a folder — local storage, an SD card, or a connected cloud drive — and confirm. Rikka saves a ZIP file containing your full database and associated files.
+  </Step>
+</Steps>
+
+### Import from a backup file
+
+<Steps>
+  <Step title="Tap Import">
+    Tap the **Import** item under *Local Backup / Export*. The system file picker opens filtered to `.zip` files.
+  </Step>
+  <Step title="Select your backup ZIP">
+    Locate and tap the backup file you previously exported.
+  </Step>
+  <Step title="Restart Rikka">
+    After a successful restore Rikka shows a restart prompt. Tap **Restart** to apply the restored data.
+  </Step>
+</Steps>
+
+<Note>
+  Manual export is the recommended method for migrating to a new Android device. Copy the ZIP file to the new device via cable, Bluetooth, or a file-sharing app, then import it.
+</Note>
+
+### Import from other apps
+
+Rikka can also import conversation history exported from other AI chat apps.
+
+<Tabs>
+  <Tab title="Chatbox">
+    Tap **Import from Chatbox**, then select the `.json` export file produced by Chatbox. Rikka parses the conversation format and merges the history into your local database.
+  </Tab>
+  <Tab title="Cherry Studio">
+    Tap **Import from Cherry Studio**, then select the `.zip` export file. Rikka extracts and converts the Cherry Studio backup format automatically.
+  </Tab>
+</Tabs>
+
+---
+
+## WebDAV Sync
+
+The **WebDAV** tab connects Rikka to any WebDAV-compatible server for automatic cloud backup and restore.
+
+<Note>
+  WebDAV sync is compatible with **Nextcloud**, **ownCloud**, and any server that implements the WebDAV protocol — including many NAS devices.
+</Note>
+
+### Configure the WebDAV connection
+
+<Steps>
+  <Step title="Open Settings → Backup → WebDAV">
+    Tap the **WebDAV** tab on the Backup page.
+  </Step>
+  <Step title="Enter the server URL">
+    Paste your WebDAV endpoint URL into the **Server Address** field. For Nextcloud, this is typically `https://your-server.com/remote.php/dav/files/username/`.
+  </Step>
+  <Step title="Enter credentials">
+    Fill in your **Username** and **Password**. For Nextcloud, generate a dedicated app password under *Personal Settings → Security* rather than using your main account password.
+  </Step>
+  <Step title="Set the remote path">
+    Enter the folder path on the server where backups should be stored in the **Path** field. The default is `rikkahub_backups`. Rikka creates the folder automatically if it does not exist.
+  </Step>
+  <Step title="Choose what to back up">
+    Toggle the **Chat Records** and **Files** segments to include or exclude each item type.
+  </Step>
+  <Step title="Test the connection">
+    Tap **Test Connection** to verify that Rikka can reach the server with the supplied credentials. A success toast confirms everything is working.
+  </Step>
+</Steps>
+
+### Back up now
+
+Tap the **Backup Now** button at the bottom of the WebDAV tab. Rikka uploads a timestamped ZIP to your configured remote path and updates the *Last Backup* timestamp shown at the top of the tab.
+
+### Restore from WebDAV
+
+<Steps>
+  <Step title="Tap Restore">
+    Tap the **Restore** button. Rikka fetches the list of available backup files from the remote path and displays them in a bottom sheet.
+  </Step>
+  <Step title="Select a backup file">
+    Each file shows its name, last-modified date, and size. Tap **Restore Now** on the file you want to restore from.
+  </Step>
+  <Step title="Restart Rikka">
+    After a successful restore, tap **Restart** when prompted.
+  </Step>
+</Steps>
+
+You can also delete individual backup files from the restore sheet by tapping **Delete** next to the file.
+
+---
+
+## S3 Sync
+
+The **S3** tab connects Rikka to any S3-compatible object storage service.
+
+<Note>
+  S3 sync works with **AWS S3**, **Cloudflare R2**, **MinIO**, **Backblaze B2**, and any other service that implements the S3 API.
+</Note>
+
+### Configure the S3 connection
+
+<Steps>
+  <Step title="Open Settings → Backup → S3">
+    Tap the **S3** tab on the Backup page.
+  </Step>
+  <Step title="Enter the endpoint URL">
+    Paste the S3-compatible endpoint into the **Endpoint** field. For AWS S3, use `https://s3.amazonaws.com`. For Cloudflare R2, use your account-specific R2 endpoint.
+  </Step>
+  <Step title="Enter your access key ID">
+    Fill in the **Access Key ID** field. Create a dedicated IAM user or API token with the minimum required permissions (`s3:GetObject`, `s3:PutObject`, `s3:DeleteObject`, `s3:ListBucket`).
+  </Step>
+  <Step title="Enter your secret access key">
+    Fill in the **Secret Access Key** field. This value is masked by default; tap the eye icon to reveal it.
+  </Step>
+  <Step title="Set the bucket and region">
+    Enter the **Bucket** name (for example, `my-rikka-backups`). Enter the **Region** — use `auto` for Cloudflare R2 or a region code such as `us-east-1` for AWS. The default region is `auto`.
+  </Step>
+  <Step title="Choose what to back up">
+    Toggle the **Chat Records** and **Files** segments to include or exclude each item type.
+  </Step>
+  <Step title="Test the connection">
+    Tap **Test Connection** to verify connectivity and permissions.
+  </Step>
+</Steps>
+
+### Back up now
+
+Tap **Backup Now**. Rikka uploads a timestamped ZIP to the configured bucket and updates the *Last Backup* timestamp.
+
+### Restore from S3
+
+<Steps>
+  <Step title="Tap Restore">
+    Tap the **Restore** button. Rikka lists all backup objects in the bucket in a bottom sheet.
+  </Step>
+  <Step title="Select a backup">
+    Each entry shows its name, modification date, and size. Tap **Restore Now** to restore from that file.
+  </Step>
+  <Step title="Restart Rikka">
+    Tap **Restart** when prompted to apply the restored data.
+  </Step>
+</Steps>
+
+You can also delete individual backup objects from the restore sheet by tapping **Delete** next to the entry.
+
+---
+
+## Backup Reminders
+
+The **Reminder** tab helps you build a regular backup habit by having Rikka send a notification when your last backup is overdue.
+
+<Steps>
+  <Step title="Open Settings → Backup → Reminder">
+    Tap the **Reminder** tab.
+  </Step>
+  <Step title="Enable reminders">
+    Toggle on **Enable Reminders**.
+  </Step>
+  <Step title="Set the interval">
+    Choose how often Rikka should remind you: **1**, **3**, **7**, **14**, or **30** days. The default is 7 days.
+  </Step>
+</Steps>
+
+Once enabled, Rikka checks on launch whether the interval has elapsed since the last recorded backup. If it has, a notification appears prompting you to back up.
+
+The last backup time is updated automatically whenever you run a WebDAV or S3 backup. For manual exports, the timestamp is updated after each successful export.
+
+<Tip>
+  Pair the 7-day reminder with WebDAV or S3 sync so that when the reminder fires you can back up in one tap without leaving the app.
+</Tip>

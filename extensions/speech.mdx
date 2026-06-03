@@ -1,0 +1,315 @@
+---
+title: "Set Up TTS and ASR Speech Providers in Rikka for Android"
+sidebarTitle: "Speech"
+description: "Configure TTS and ASR providers in Rikka to have AI responses read aloud and dictate your messages with a microphone instead of typing."
+---
+
+Rikka ships with built-in support for both Text-to-Speech (TTS) — hearing AI responses read aloud — and Automatic Speech Recognition (ASR) — dictating your messages with a microphone instead of typing. You configure each capability independently, choosing from several cloud and on-device providers. Once set up, TTS and ASR work directly from the chat screen without leaving the conversation.
+
+Navigate to **Settings → Speech** to access both tabs.
+
+<Tabs>
+  <Tab title="Text-to-Speech (TTS)">
+
+    ## Setting Up TTS
+
+    Open the **TTS** tab inside **Settings → Speech**. Tap **Add Provider** and select the provider you want to use. Fill in the required fields, then tap Save. You can add multiple providers and switch between them at any time.
+
+    To hear a message read aloud, tap the **speaker icon** that appears on any assistant message bubble.
+
+    ---
+
+    ### Available TTS Providers
+
+    <Accordion title="OpenAI TTS">
+
+    Uses OpenAI's neural TTS API. Produces natural-sounding speech with a choice of six preset voices.
+
+    <ParamField body="apiKey" type="string" required>
+      Your OpenAI API key. Find this in your [OpenAI dashboard](https://platform.openai.com/api-keys).
+    </ParamField>
+
+    <ParamField body="baseUrl" type="string" default="https://api.openai.com/v1">
+      Base URL for the OpenAI-compatible API. Change this if you are routing through a proxy or using a third-party OpenAI-compatible endpoint.
+    </ParamField>
+
+    <ParamField body="model" type="string" default="gpt-4o-mini-tts">
+      The TTS model to use. `gpt-4o-mini-tts` is fast and cost-effective; swap in `tts-1-hd` for higher fidelity output.
+    </ParamField>
+
+    <ParamField body="voice" type="string" default="alloy">
+      Voice preset. OpenAI offers `alloy`, `echo`, `fable`, `onyx`, `nova`, and `shimmer`.
+    </ParamField>
+
+    </Accordion>
+
+    <Accordion title="Gemini TTS">
+
+    Uses Google's Gemini multimodal TTS. Supports a wide range of voices including the expressive Gemini 2.5 family.
+
+    <ParamField body="apiKey" type="string" required>
+      Your Google AI Studio API key.
+    </ParamField>
+
+    <ParamField body="baseUrl" type="string" default="https://generativelanguage.googleapis.com/v1beta">
+      Base URL for the Gemini API.
+    </ParamField>
+
+    <ParamField body="model" type="string" default="gemini-2.5-flash-preview-tts">
+      Gemini model to use for speech synthesis.
+    </ParamField>
+
+    <ParamField body="voiceName" type="string" default="Kore">
+      Voice name. Refer to the [Google AI voice list](https://ai.google.dev/gemini-api/docs/speech-generation) for all available options.
+    </ParamField>
+
+    </Accordion>
+
+    <Accordion title="MiniMax TTS">
+
+    High-quality Chinese and multilingual TTS from MiniMax.
+
+    <ParamField body="apiKey" type="string" required>
+      Your MiniMax API key.
+    </ParamField>
+
+    <ParamField body="baseUrl" type="string" default="https://api.minimaxi.com/v1">
+      MiniMax API base URL.
+    </ParamField>
+
+    <ParamField body="model" type="string" default="speech-2.6-turbo">
+      TTS model identifier.
+    </ParamField>
+
+    <ParamField body="voiceId" type="string" default="female-shaonv">
+      Voice ID. Browse available voices in the MiniMax console.
+    </ParamField>
+
+    <ParamField body="emotion" type="string" default="calm">
+      Emotional tone of the synthesized voice, e.g. `calm`, `happy`, `sad`.
+    </ParamField>
+
+    <ParamField body="speed" type="float" default="1.0">
+      Playback speed multiplier. Values below `1.0` slow speech down; values above `1.0` speed it up.
+    </ParamField>
+
+    </Accordion>
+
+    <Accordion title="Qwen TTS">
+
+    Alibaba DashScope's Qwen TTS, optimised for Chinese and multilingual speech.
+
+    <ParamField body="apiKey" type="string" required>
+      Your DashScope API key.
+    </ParamField>
+
+    <ParamField body="baseUrl" type="string" default="https://dashscope.aliyuncs.com/api/v1">
+      DashScope API base URL.
+    </ParamField>
+
+    <ParamField body="model" type="string" default="qwen3-tts-flash">
+      TTS model. `qwen3-tts-flash` is the low-latency variant.
+    </ParamField>
+
+    <ParamField body="voice" type="string" default="Cherry">
+      Voice name. Check the DashScope documentation for the full list.
+    </ParamField>
+
+    <ParamField body="languageType" type="string" default="Auto">
+      Language hint. `Auto` lets the model detect the language automatically.
+    </ParamField>
+
+    </Accordion>
+
+    <Accordion title="Groq TTS">
+
+    Fast TTS via Groq's inference infrastructure, powered by Orpheus models.
+
+    <ParamField body="apiKey" type="string" required>
+      Your Groq API key.
+    </ParamField>
+
+    <ParamField body="baseUrl" type="string" default="https://api.groq.com/openai/v1">
+      Groq API base URL.
+    </ParamField>
+
+    <ParamField body="model" type="string" default="canopylabs/orpheus-v1-english">
+      Orpheus TTS model to use.
+    </ParamField>
+
+    <ParamField body="voice" type="string" default="austin">
+      Voice preset name.
+    </ParamField>
+
+    </Accordion>
+
+    <Accordion title="xAI TTS">
+
+    Text-to-speech via xAI's Grok API.
+
+    <ParamField body="apiKey" type="string" required>
+      Your xAI API key.
+    </ParamField>
+
+    <ParamField body="baseUrl" type="string" default="https://api.x.ai/v1">
+      xAI API base URL.
+    </ParamField>
+
+    <ParamField body="voiceId" type="string" default="eve">
+      Voice identifier.
+    </ParamField>
+
+    <ParamField body="language" type="string" default="auto">
+      BCP-47 language tag or `auto` for automatic detection.
+    </ParamField>
+
+    </Accordion>
+
+    <Accordion title="MiMo TTS">
+
+    TTS provided by Xiaomi's MiMo service.
+
+    <ParamField body="apiKey" type="string" required>
+      Your MiMo API key.
+    </ParamField>
+
+    <ParamField body="baseUrl" type="string" default="https://api.xiaomimimo.com/v1">
+      MiMo API base URL.
+    </ParamField>
+
+    <ParamField body="model" type="string" default="mimo-v2-tts">
+      TTS model identifier.
+    </ParamField>
+
+    <ParamField body="voice" type="string" default="mimo_default">
+      Voice preset.
+    </ParamField>
+
+    </Accordion>
+
+    <Accordion title="System TTS">
+
+    Uses Android's built-in text-to-speech engine. No API key required — works fully on-device using whatever voice packs you have installed in Android settings.
+
+    <ParamField body="speechRate" type="float" default="1.0">
+      Speed of synthesized speech. `1.0` is normal speed; increase for faster delivery, decrease for slower.
+    </ParamField>
+
+    <ParamField body="pitch" type="float" default="1.0">
+      Pitch of the synthesized voice. `1.0` is the default pitch for the selected Android voice.
+    </ParamField>
+
+    <Note>
+      The quality and language support of System TTS depend on the voice packs installed on your device. You can install additional voices in **Android Settings → Accessibility → Text-to-speech output**.
+    </Note>
+
+    </Accordion>
+
+  </Tab>
+  <Tab title="Automatic Speech Recognition (ASR)">
+
+    ## Setting Up ASR
+
+    Open the **ASR** tab inside **Settings → Speech**. Tap **Add Provider** and select your preferred provider. After saving, a **microphone icon** appears in the chat input bar. Tap and hold it to record your voice; Rikka transcribes the audio and inserts the text into the message field automatically.
+
+    ---
+
+    ### Available ASR Providers
+
+    <Accordion title="OpenAI Realtime ASR">
+
+    Streams audio to OpenAI's Realtime transcription API over a WebSocket connection, giving you low-latency, real-time transcription with voice activity detection (VAD).
+
+    <ParamField body="apiKey" type="string" required>
+      Your OpenAI API key.
+    </ParamField>
+
+    <ParamField body="websocketUrl" type="string" default="wss://api.openai.com/v1/realtime?intent=transcription">
+      WebSocket endpoint for the Realtime transcription API.
+    </ParamField>
+
+    <ParamField body="model" type="string" default="gpt-4o-transcribe">
+      Transcription model. `gpt-4o-transcribe` offers the best accuracy.
+    </ParamField>
+
+    <ParamField body="language" type="string">
+      BCP-47 language code (e.g. `en`, `zh`, `ja`). Leave empty to enable automatic language detection.
+    </ParamField>
+
+    <ParamField body="vadThreshold" type="float" default="0.5">
+      Voice activity detection sensitivity, from `0.0` (very sensitive) to `1.0` (least sensitive). Increase this in noisy environments to reduce false triggers.
+    </ParamField>
+
+    <ParamField body="silenceDurationMs" type="integer" default="500">
+      How many milliseconds of silence Rikka waits before treating the utterance as complete and finalising the transcript.
+    </ParamField>
+
+    </Accordion>
+
+    <Accordion title="DashScope ASR (Qwen)">
+
+    Real-time streaming ASR from Alibaba Cloud's DashScope, backed by Qwen's speech models and optimised for Chinese and multilingual audio.
+
+    <ParamField body="apiKey" type="string" required>
+      Your DashScope API key.
+    </ParamField>
+
+    <ParamField body="websocketUrl" type="string" default="wss://dashscope.aliyuncs.com/api-ws/v1/inference">
+      DashScope WebSocket inference endpoint.
+    </ParamField>
+
+    <ParamField body="model" type="string" default="qwen3-asr-flash-realtime">
+      ASR model identifier. The `flash-realtime` variant prioritises low latency.
+    </ParamField>
+
+    <ParamField body="language" type="string">
+      Language code hint. Leave empty for automatic detection.
+    </ParamField>
+
+    <ParamField body="vadThreshold" type="float" default="0.2">
+      VAD sensitivity. Lower values make the detector more aggressive about cutting off silence.
+    </ParamField>
+
+    </Accordion>
+
+    <Accordion title="Volcengine ASR">
+
+    Streaming ASR from ByteDance's Volcengine platform (via the SeedASR model), well-suited for Mandarin Chinese and multi-accent speech.
+
+    <ParamField body="apiKey" type="string" required>
+      Your Volcengine API key.
+    </ParamField>
+
+    <ParamField body="websocketUrl" type="string" default="wss://openspeech.bytedance.com/api/v3/sauc/bigmodel">
+      Volcengine ASR WebSocket endpoint.
+    </ParamField>
+
+    <ParamField body="resourceId" type="string" default="volc.seedasr.sauc.duration">
+      Volcengine resource identifier for the ASR service.
+    </ParamField>
+
+    <ParamField body="language" type="string">
+      Language code. Leave empty to rely on the model's built-in language detection.
+    </ParamField>
+
+    </Accordion>
+
+  </Tab>
+</Tabs>
+
+## Using Speech in the Chat Screen
+
+Once you have at least one provider configured in each category, the controls appear directly in the chat interface:
+
+<CardGroup cols={2}>
+  <Card title="Microphone (ASR)" icon="microphone">
+    Tap the **microphone icon** in the chat input bar to start recording. Speak your message naturally — Rikka streams the audio to your ASR provider and populates the text field as words are transcribed. Release or tap again to stop.
+  </Card>
+  <Card title="Speaker (TTS)" icon="volume-high">
+    Tap the **speaker icon** on any assistant message to have it read aloud by your configured TTS provider. Tap again to stop playback mid-sentence.
+  </Card>
+</CardGroup>
+
+<Tip>
+  If you primarily use voice input, combine ASR with a low-latency TTS provider so the full conversation flows naturally without switching away from the keyboard.
+</Tip>

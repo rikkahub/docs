@@ -1,0 +1,99 @@
+---
+title: "Multimodal Input: Attach Images and Documents to Chats"
+sidebarTitle: "Multimodal"
+description: "Attach images, PDFs, DOCX files, and more to your Rikka messages. Learn how OCR and document extraction work for non-vision models."
+---
+
+Rikka supports more than plain text. You can attach images, documents, and other files directly to any message, and the app handles the conversion steps needed to deliver that content to the underlying AI model — whether the model natively understands images or not.
+
+## Attaching Files
+
+Tap the **+** (Add) button on the left side of the chat input bar to open the attachment picker. From there you can choose how to add content:
+
+<CardGroup cols={2}>
+  <Card title="Camera" icon="camera">
+    Take a photo on the spot. The image is saved to app storage and attached immediately.
+  </Card>
+  <Card title="Gallery / Files" icon="image">
+    Pick one or more images or documents from your device. Supported document types include PDF, DOCX, PPTX, and EPUB.
+  </Card>
+  <Card title="Paste from clipboard" icon="clipboard">
+    Copy an image from another app, tap the input field, and paste. Rikka detects the image and attaches it automatically.
+  </Card>
+  <Card title="Share from another app" icon="share">
+    Use Android's share sheet to send a file or image to Rikka. The shared content pre-populates the input bar ready to send.
+  </Card>
+</CardGroup>
+
+Attached files appear as chips above the text input. Tap the **×** on any chip to remove that attachment before sending.
+
+## Images
+
+When you attach an image and the selected model supports vision input, Rikka encodes the image as base64 and passes it directly to the model. The model sees the image as part of the conversation.
+
+Attachment chips for images display a small thumbnail so you can confirm the right file is attached before sending.
+
+<Note>
+  Not all models support image input. If you select a model that does not accept image modalities, Rikka automatically falls back to OCR — see the **OCR** section below.
+</Note>
+
+## Documents: PDF, DOCX, PPTX, and EPUB
+
+Rikka supports the following document types natively:
+
+| Format | Extension | MIME type |
+|--------|-----------|-----------|
+| PDF    | `.pdf`    | `application/pdf` |
+| Word   | `.docx`   | `application/vnd.openxmlformats-officedocument.wordprocessingml.document` |
+| PowerPoint | `.pptx` | `application/vnd.openxmlformats-officedocument.presentationml.presentation` |
+| E-book | `.epub`   | `application/epub+zip` |
+
+When you attach a supported document, Rikka extracts its text content before the message is sent. The extracted text is injected as a text block at the beginning of your message, formatted like this:
+
+```text
+## user sent a file: report.pdf
+[content]
+[extracted text goes here]
+[/content]
+```
+
+The model then reads the document text as part of your prompt, letting you ask questions about the content, summarise it, or request translations — even if the model has no native file-upload capability.
+
+<Warning>
+  Very large documents may exceed a model's context window. If you receive an error about context length, try sending a shorter excerpt or splitting the document into smaller sections before attaching.
+</Warning>
+
+## OCR — Extracting Text from Images
+
+If the active model does **not** support image input (i.e., it lacks vision modality), Rikka automatically runs OCR on any attached images using a separate vision-capable model you designate as the OCR model.
+
+<Steps>
+  <Step title="Configure an OCR model">
+    Go to **Settings → Models** and set an **OCR Model**. Choose any vision-capable model from your configured providers — a fast, low-cost vision model works well here.
+  </Step>
+  <Step title="Attach an image">
+    Attach an image as usual. When you send the message, Rikka checks whether the active chat model supports image input.
+  </Step>
+  <Step title="Automatic OCR">
+    If the chat model does not support vision, Rikka sends the image to your configured OCR model with the extraction prompt. The transcribed text is then injected into your message in place of the raw image, so the main model receives a text description instead.
+  </Step>
+  <Step title="Results are cached">
+    OCR results are cached for up to three days. If you send the same image again in a new message, Rikka reuses the cached text rather than calling the OCR model again.
+  </Step>
+</Steps>
+
+<Tip>
+  You can customise the OCR prompt in **Settings → Models → OCR Prompt** to control how the OCR model describes or transcribes images — for example, asking it to preserve table structure or transcribe handwriting carefully.
+</Tip>
+
+## File Size and Model Support
+
+Keep these practical limits in mind when attaching files:
+
+- **Image size** — Large images are passed as base64, which increases the token count significantly. Resize very large images before attaching them to avoid hitting context limits.
+- **Document length** — The full extracted text of a document is injected into the prompt. PDFs with hundreds of pages can easily overflow a standard 8k-token context window. Use a model with a long context window (e.g. 128k tokens) for lengthy documents.
+- **Model capability** — Not every provider or model tier exposes vision or document APIs. Consult your provider's documentation to confirm which input modalities a specific model supports.
+
+<Note>
+  Always check your provider's documentation to confirm which input types a model supports. Rikka detects image modality automatically, but document handling is always done via text extraction regardless of model capabilities.
+</Note>

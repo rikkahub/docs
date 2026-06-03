@@ -1,0 +1,101 @@
+{
+  "projectType": "saas",
+  "projectName": "Rikka",
+  "projectDescription": "Rikka is a native Android app that lets you chat with multiple AI providers — OpenAI, Google, Anthropic, and more — from a single beautiful interface.",
+  "theme": "almond",
+  "primaryColor": "#040404",
+  "lightColor": null,
+  "darkColor": null,
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Docs",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "download",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Providers",
+            "pages": [
+              "providers/overview",
+              "providers/openai",
+              "providers/google",
+              "providers/claude",
+              "providers/custom"
+            ]
+          },
+          {
+            "group": "Chat",
+            "pages": [
+              "chat/conversations",
+              "chat/multimodal",
+              "chat/branching",
+              "chat/search"
+            ]
+          },
+          {
+            "group": "Assistants",
+            "pages": [
+              "assistants/overview",
+              "assistants/memory",
+              "assistants/prompt-injection"
+            ]
+          },
+          {
+            "group": "Extensions",
+            "pages": [
+              "extensions/mcp",
+              "extensions/skills",
+              "extensions/speech",
+              "extensions/image-generation"
+            ]
+          },
+          {
+            "group": "Settings & Sync",
+            "pages": [
+              "settings/appearance",
+              "settings/web-access",
+              "settings/backup"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Multi-provider AI support (OpenAI, Google Gemini, Anthropic Claude, and any OpenAI-compatible API)",
+    "Material You design with dynamic color and dark mode",
+    "Multimodal input — images, PDFs, DOCX files",
+    "MCP (Model Context Protocol) server integration",
+    "Built-in web search via Exa, Tavily, Brave, Perplexity, and more",
+    "Message branching for exploring alternate conversation paths",
+    "AI memory — persistent facts recalled across conversations",
+    "Text-to-speech and automatic speech recognition",
+    "Web UI accessible from any browser on your local network",
+    "Backup & sync via WebDAV or S3-compatible storage",
+    "Custom assistants with system prompts, regex transforms, and lorebooks",
+    "AI translation and image generation",
+    "QR code sharing for provider configurations",
+    "SillyTavern character card import"
+  ],
+  "publicApiSurface": [
+    "ProviderSetting.OpenAI (apiKey, baseUrl, models, customHeaders, customBodies)",
+    "ProviderSetting.Google (apiKey, baseUrl, vertexAI, serviceAccount)",
+    "ProviderSetting.Claude (apiKey, baseUrl, promptCaching)",
+    "McpServerConfig.SseTransportServer (url, headers)",
+    "McpServerConfig.StreamableHTTPServer (url, headers)",
+    "Assistant (systemPrompt, temperature, topP, contextMessageSize, mcpServers, enableMemory)",
+    "SearchService (Exa, Tavily, Brave, Perplexity, Zhipu, LinkUp, Bing, SearXNG, Grok, Jina, Firecrawl, Ollama, Metaso)",
+    "TTSProviderSetting (OpenAI TTS, Gemini TTS, System TTS)",
+    "ASRProviderSetting (OpenAI Realtime, DashScope, Volcengine)",
+    "WebServer (port, accessPassword, localhostOnly)",
+    "S3Config / WebDAV (backup and sync)",
+    "PromptInjection / Lorebook (context injection system)",
+    "QR code export/import for provider settings"
+  ]
+}

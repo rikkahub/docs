@@ -1,0 +1,130 @@
+---
+title: "Managing Conversations in the Rikka Chat Interface"
+sidebarTitle: "Conversations"
+description: "Start chats, switch models, edit and regenerate messages, render rich Markdown, favorite content, share, and track token usage in Rikka."
+---
+
+The chat screen is where you spend most of your time in Rikka. Every conversation is stored locally on your device, and you can create as many as you need across multiple AI providers without any limit imposed by the app.
+
+## Starting a New Conversation
+
+Tap the **compose** icon (pencil-and-paper) in the top-right corner of the chat toolbar to open a fresh conversation. Rikka automatically generates a title for the conversation once you send your first message. You can rename it at any time by tapping the title in the top bar — an inline edit dialog will appear.
+
+<Steps>
+  <Step title="Open the chat screen">
+    Launch Rikka. The last conversation you used opens automatically.
+  </Step>
+  <Step title="Tap the new-chat icon">
+    Tap the **MessageAdd** icon in the top-right corner. A blank conversation opens immediately.
+  </Step>
+  <Step title="Type your message and send">
+    Enter your text in the input bar at the bottom and tap the **send** button (arrow-up). Rikka streams the reply in real time.
+  </Step>
+</Steps>
+
+## Switching Between Conversations
+
+All your past conversations live in the **history drawer**. On phones, swipe from the left edge or tap the hamburger menu icon to open the drawer. On large-screen devices (tablets and foldables in landscape), the drawer is always visible on the left side.
+
+Inside the drawer you will find:
+
+- A **search bar** that jumps to the conversation search page where you can search message content across all chats using full-text search.
+- A **History** shortcut that takes you to the full conversation list.
+- The conversation list itself, sorted by most recently updated, with pinned items at the top.
+
+Tap any conversation to switch to it. Long-press a conversation item to reveal context menu options such as rename, pin, move to a different assistant, or delete.
+
+<Tip>
+  Pin frequently used conversations by long-pressing them in the drawer and selecting **Pin**. Pinned conversations always appear at the top of the list.
+</Tip>
+
+## Switching Models Mid-Conversation
+
+You can change the active AI model at any point without starting a new chat.
+
+Tap the **model selector** shown below the conversation title in the top bar (or inside the input bar on some screen sizes). A picker lists all models from every provider you have configured. Select a new model — subsequent messages will use it while earlier messages remain unchanged.
+
+<Note>
+  Switching models does not re-generate any previous messages. Only new messages sent after the switch use the newly selected model.
+</Note>
+
+## Regenerating and Editing Messages
+
+Rikka lets you refine any exchange without losing context.
+
+<CardGroup cols={2}>
+  <Card title="Regenerate a Response" icon="rotate-right">
+    Long-press an assistant message or tap the action menu that appears beneath it, then choose **Regenerate**. Rikka re-runs the same prompt and appends a new response as an additional branch on that node.
+  </Card>
+  <Card title="Edit a User Message" icon="pencil">
+    Long-press your own message and tap **Edit**. The text loads back into the input bar. Modify it and send — Rikka re-generates the assistant reply from that point forward.
+  </Card>
+</CardGroup>
+
+You can also **delete** any individual message by long-pressing it and selecting **Delete** from the action menu. Deletion is blocked while a response is actively streaming; stop generation first.
+
+## Markdown Rendering
+
+Rikka renders rich content inside assistant (and user) messages:
+
+<Accordion title="Code blocks with syntax highlighting">
+  Fenced code blocks (` ```language `) are highlighted using a built-in syntax highlighter. Tap the copy icon in the top-right corner of any code block to copy its contents to the clipboard.
+</Accordion>
+
+<Accordion title="LaTeX formulas">
+  Inline math enclosed in `$...$` and display math in `$$...$$` are rendered natively. Both inline and block equations are supported.
+</Accordion>
+
+<Accordion title="Tables">
+  Standard Markdown tables render with proper column alignment. Scroll horizontally on narrow screens to see wide tables.
+</Accordion>
+
+<Accordion title="Mermaid diagrams">
+  Mermaid diagram code blocks (` ```mermaid `) render as interactive diagrams. Tap the **Export** button on any diagram to save it as an image.
+</Accordion>
+
+## Favoriting Messages
+
+Mark an important assistant response so you can find it later from any conversation.
+
+Tap the **heart** (favorite) icon below a message. A filled heart indicates the message is saved. Access all favorited messages from the drawer by tapping the **Favorites** icon. Tapping a favorite jumps you straight to that message inside its original conversation.
+
+## Sharing a Conversation
+
+Rikka can export any selection of messages in two formats.
+
+<Steps>
+  <Step title="Enter selection mode">
+    Long-press any message and tap **Share**. Rikka pre-selects all messages up to and including that one and enters multi-select mode.
+  </Step>
+  <Step title="Adjust the selection">
+    Tap individual messages to add or remove them from the selection. Use the **Select All** button in the floating toolbar to toggle all messages.
+  </Step>
+  <Step title="Choose an export format">
+    Tap the **Confirm** (checkmark) button. The export sheet appears with two options:
+    - **Markdown** — exports a `.md` file you can share via any app.
+    - **Image** — renders the selection as a PNG with optional expanded reasoning sections and a Rikka watermark.
+  </Step>
+</Steps>
+
+## Deleting Conversations
+
+Open the history drawer, long-press the conversation you want to remove, and tap **Delete**. The conversation and all its messages are removed permanently from local storage. There is no trash or undo.
+
+<Warning>
+  Deleted conversations cannot be recovered unless you have a backup. Export important conversations before deleting them.
+</Warning>
+
+## Stats Page (Token Usage)
+
+Rikka tracks how many input and output tokens each conversation consumes and displays aggregated charts in the Stats page.
+
+Open the history drawer and tap the **Chart** icon in the bottom action row to navigate to **Stats**. The page shows:
+
+- A **weekly activity heatmap** with daily message counts.
+- Total and per-day breakdowns of **input tokens**, **output tokens**, and **total tokens**.
+- Per-model usage so you can see which models you use most.
+
+<Note>
+  Token counts are recorded at generation time. Messages sent before you updated to a version that supports stats tracking will not appear in the charts.
+</Note>
