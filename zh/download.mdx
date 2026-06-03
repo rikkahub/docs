@@ -1,0 +1,115 @@
+---
+title: "在 Android 上安装 Rikka：从 Play 或官网下载"
+sidebarTitle: "下载"
+description: "从 Google Play 或官网下载 Rikka，安装到你的 Android 设备，并在几分钟内完成首次启动配置。"
+---
+
+Rikka 是一款原生 Android 应用，通过两个官方渠道发布：Rikka 官网和 Google Play 商店。两个渠道提供的是同一款应用——选择最方便的方式即可。本页将引导你完成下载、安装和首次启动。
+
+## 系统要求
+
+安装前，请确认你的设备满足最低要求。
+
+<Card
+  title="需要 Android 设备"
+  icon="robot"
+  href="https://play.google.com/store/apps/details?id=me.rerere.rikkahub"
+>
+  Rikka 在 Android 手机和平板上运行。请查看 Google Play 页面了解你的设备所支持的最低 Android 版本。
+</Card>
+
+<Note>
+  Rikka 目前没有 iOS 版本，请确保你是在 Android 设备上安装。
+</Note>
+
+## 下载方式
+
+<Tabs>
+  <Tab title="Google Play 商店">
+    Google Play 商店是安装 Rikka 最简便的方式。Play 会自动处理更新，无需任何操作即可始终使用最新版本。
+
+    1. 在你的 Android 设备上打开 **Google Play 商店**。
+    2. 搜索 **Rikka**，或点击下方链接直接跳转到应用页面。
+    3. 点击**安装**，等待下载完成。
+
+    <Card
+      title="Rikka on Google Play"
+      icon="rocket"
+      href="https://play.google.com/store/apps/details?id=me.rerere.rikkahub"
+    >
+      在 Google Play 商店打开 Rikka 官方页面。
+    </Card>
+  </Tab>
+  <Tab title="官方网站">
+    你也可以直接从 Rikka 官网下载 APK 文件。如果 Play 商店在你的地区不可用，或者你更喜欢手动安装，可以选择此方式。
+
+    1. 在浏览器中访问 **[rikka-ai.com/download](https://rikka-ai.com/download)**。
+    2. 点击下载按钮，将 APK 文件保存到设备。
+    3. 打开文件管理器，找到下载的 APK 文件，点击开始安装。
+    4. 如有提示，为你的浏览器或文件管理器授予**安装未知应用**的权限。
+    5. 按照屏幕提示完成安装。
+
+    <Warning>
+      请只从 **rikka-ai.com** 或 Google Play 官方页面下载 Rikka。来自第三方来源的 APK 可能已过时或被篡改。
+    </Warning>
+  </Tab>
+</Tabs>
+
+## 首次启动体验
+
+安装完成后，从主屏幕或应用抽屉打开 Rikka。首次启动时，Rikka 会引导你完成基本配置：
+
+<Steps>
+  <Step title="欢迎界面">
+    Rikka 会显示一个简短的欢迎界面，点击**开始使用**进入设置流程。
+  </Step>
+  <Step title="添加服务商">
+    Rikka 会提示你添加至少一个 AI 服务商。选择你偏好的服务商——OpenAI、Google Gemini、Anthropic Claude 或自定义兼容 OpenAI 的端点——并输入你的 API 密钥。之后可在**设置 → 服务商**中添加更多服务商。
+  </Step>
+  <Step title="选择默认模型">
+    为新对话选择一个默认模型。你随时可以按对话单独更改模型。
+  </Step>
+  <Step title="开始聊天">
+    点击**开始聊天**打开主对话界面，Rikka 已准备就绪。
+  </Step>
+</Steps>
+
+## 通过二维码导入服务商配置
+
+如果你已在其他设备上配置过 Rikka，可以通过扫描二维码导入服务商配置，跳过手动输入 API 密钥的步骤。
+
+<Accordion title="如何通过二维码导入">
+  在原有设备上：
+  1. 打开**设置 → 服务商**。
+  2. 点击**导出**或**分享**选项，选择**二维码**。
+  3. 屏幕上会显示包含你的服务商配置的二维码。
+
+  在新设备上：
+  1. 完成安装并打开 Rikka。
+  2. 在服务商设置界面，点击**通过二维码导入**。
+  3. 将摄像头对准原有设备上的二维码。
+  4. Rikka 会自动导入你的服务商配置。
+
+  <Note>
+    二维码包含你的 API 密钥，请妥善保管，不要公开分享或截图保存到不安全的位置。
+  </Note>
+</Accordion>
+
+## 下一步
+
+<CardGroup cols={2}>
+  <Card
+    title="快速上手指南"
+    icon="rocket"
+    href="/zh/quickstart"
+  >
+    添加服务商，五分钟内发送第一条消息。
+  </Card>
+  <Card
+    title="服务商概览"
+    icon="plug"
+    href="/zh/providers/overview"
+  >
+    了解如何配置 OpenAI、Gemini、Claude 和自定义端点。
+  </Card>
+</CardGroup>

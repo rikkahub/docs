@@ -17,9 +17,9 @@
     }
   },
   "navigation": {
-    "tabs": [
+    "languages": [
       {
-        "tab": "Docs",
+        "language": "en",
         "groups": [
           {
             "group": "Get Started",
@@ -71,6 +71,63 @@
               "settings/appearance",
               "settings/web-access",
               "settings/backup"
+            ]
+          }
+        ]
+      },
+      {
+        "language": "zh",
+        "groups": [
+          {
+            "group": "快速开始",
+            "pages": [
+              "zh/introduction",
+              "zh/download",
+              "zh/quickstart"
+            ]
+          },
+          {
+            "group": "模型提供商",
+            "pages": [
+              "zh/providers/overview",
+              "zh/providers/openai",
+              "zh/providers/google",
+              "zh/providers/claude",
+              "zh/providers/custom"
+            ]
+          },
+          {
+            "group": "对话",
+            "pages": [
+              "zh/chat/conversations",
+              "zh/chat/multimodal",
+              "zh/chat/branching",
+              "zh/chat/search"
+            ]
+          },
+          {
+            "group": "助手",
+            "pages": [
+              "zh/assistants/overview",
+              "zh/assistants/memory",
+              "zh/assistants/prompt-injection"
+            ]
+          },
+          {
+            "group": "扩展功能",
+            "pages": [
+              "zh/extensions/mcp",
+              "zh/extensions/skills",
+              "zh/extensions/speech",
+              "zh/extensions/image-generation"
+            ]
+          },
+          {
+            "group": "设置与同步",
+            "pages": [
+              "zh/settings/appearance",
+              "zh/settings/web-access",
+              "zh/settings/backup"
             ]
           }
         ]

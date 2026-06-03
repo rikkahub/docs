@@ -1,0 +1,128 @@
+---
+title: "快速上手：5 分钟内发送第一条 AI 消息"
+sidebarTitle: "快速上手"
+description: "在 Android 上安装 Rikka，连接第一个 AI 服务商，选择模型，五分钟内发送第一条消息。"
+---
+
+本指南帮助你尽快完成第一次 AI 对话。你需要一台 Android 设备、已安装的 Rikka，以及至少一个 AI 服务商的 API 密钥。如果你还没有 API 密钥，请先前往对应服务商注册——以下步骤中包含相关链接。
+
+<Steps>
+  <Step title="下载并安装 Rikka">
+    从 Google Play 商店或官网在你的 Android 设备上安装 Rikka。
+
+    <CardGroup cols={2}>
+      <Card
+        title="官方网站（推荐）"
+        icon="download"
+        href="https://rikka-ai.com/download"
+      >
+        从 rikka-ai.com 直接下载最新 APK，始终保持最新版本。
+      </Card>
+      <Card
+        title="Google Play 商店"
+        icon="rocket"
+        href="https://play.google.com/store/apps/details?id=me.rerere.rikkahub"
+      >
+        在 Play 页面点击**安装**，享受自动更新和便捷安装。
+      </Card>
+    </CardGroup>
+
+    安装完成后，从主屏幕或应用抽屉打开 Rikka。
+
+  </Step>
+
+  <Step title="打开设置并添加服务商">
+    Rikka 需要至少一个 AI 服务商才能开始聊天，现在前往服务商设置。
+
+    1. 点击侧边栏底部中的**设置**图标（齿轮）。
+    2. 在设置菜单中选择**提供商设置**。
+    3. 这里预设了很多提供商，如果有你想要的，直接进入后填写api key即可，如果没有，点击右上角新建一个提供商。
+
+    <Tabs>
+      <Tab title="OpenAI">
+        这是目前最主流的接口格式，填写你提供商提供的base url和api key即可完成配置。
+
+        openai接口有两个版本，一个是传统的**Chat Completions**接口，RikkaHub默认就是这个接口格式，这是目前最流行最主要的接口，大多数提供商都支持。
+
+        另外一个就是全新的**Response API**，OpenAI官方自己已经优先使用这个接口了，如果你使用openai官方api，或者中转的gpt模型，优先使用这个接口，点击使用Response API即可切换到这个模式。
+      </Tab>
+      <Tab title="Google Gemini">
+        Gemini自己的格式，只用于google gemini模型。
+      </Tab>
+      <Tab title="Anthropic Claude">
+        仅此于OpenAI格式的另外一大接口格式，除了Claude，还有一些其他模型也用这个格式
+      </Tab>
+    </Tabs>
+
+  </Step>
+
+  <Step title="输入你的 API 密钥">
+    将 API 密钥粘贴到所选服务商的 **API Key** 字段中。
+
+    如果你用的是非官方的中转，并且RikkaHub没有内置这个提供商，你新建提供商的时候还需要配置提供商的**Base Url**。
+
+    <Warning>
+      请像对待密码一样保护你的 API 密钥。不要分享，也不要粘贴到不受信任的应用中。Rikka 将密钥存储在你的设备本地，绝不会发送到 Rikka 的服务器——密钥直接传送给你选择的服务商。
+    </Warning>
+
+    粘贴密钥后，点击**保存**或**确认**以存储服务商配置。
+
+  </Step>
+
+  <Step title="添加模型">
+    配置提供商后，提供商配置节目底部还有个模型栏，点击进入，添加你希望使用的模型。
+
+    大部分提供商支持获取模型列表，你只需要点击展开模型列表，然后从列表选择你要用的模型即可。
+
+    如果不需要这个模型，侧滑即可删除。
+
+    <Note>
+      你可以随时在对话中通过聊天工具栏中的模型选择器更换模型。默认模型只是新对话的起点。
+    </Note>
+
+  </Step>
+
+  <Step title="配置默认模型">
+  现在你还需要配置各个功能的默认模型，回到设置页面，选择**默认模型和提示词**，配置下各个功能模块默认用的模型即可。
+
+  除了对话模型，其他功能用的模型可以按需配置，通常可以配置一些速度更快价格更低的模型。
+
+  </Step>
+
+  <Step title="开始第一次对话">
+    一切就绪，返回主界面开启新对话。
+
+    1. 点击底部左侧的模型选择按钮，选择你希望使用的模型。
+    2. 在底部文本框中输入第一条消息，然后发送
+
+    Rikka 会实时流式输出回复。大功告成，你已经可以正常使用了！
+
+    <Tip>
+      试试用「介绍一下你能帮我做什么」作为开场白，感受模型的能力，再开始更具体的任务。
+    </Tip>
+    
+    <Warning>
+      请不要询问它是什么模型，模型并没有准确的自我认知，这不是模型或者RikkaHub的问题，这是大模型的原理导致的。
+
+      官方的App或者其他App可以准确回答是因为它们内置了系统提示词，指导了模型身份，RikkaHub默认情况下不会内置这些提示词，当然
+      你也可以设置这些提示词。
+    </Warning>
+  </Step>
+</Steps>
+
+## 接下来探索
+
+<CardGroup cols={2}>
+  <Card title="服务商概览" icon="plug" href="/zh/providers/overview">
+    添加更多服务商，了解如何配置自定义 Base URL 和请求头等高级选项。
+  </Card>
+  <Card title="自定义助手" icon="robot" href="/zh/assistants/overview">
+    创建带有自定义系统提示、默认模型和个性设定的可复用助手。
+  </Card>
+  <Card title="MCP 扩展" icon="puzzle" href="/zh/extensions/mcp">
+    连接外部工具和数据源，让 AI 能够执行真实世界的操作。
+  </Card>
+  <Card title="网络访问" icon="globe" href="/zh/settings/web-access">
+    开启实时网络搜索，让 AI 能够回答关于当前事件和最新信息的问题。
+  </Card>
+</CardGroup>

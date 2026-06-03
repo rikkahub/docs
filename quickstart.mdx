@@ -12,133 +12,114 @@ This guide gets you from zero to your first AI conversation as quickly as possib
 
     <CardGroup cols={2}>
       <Card
+        title="Official Website (Recommended)"
+        icon="download"
+        href="https://rikka-ai.com/download"
+      >
+        Download the latest APK directly from rikka-ai.com — always up to date.
+      </Card>
+      <Card
         title="Google Play Store"
         icon="rocket"
         href="https://play.google.com/store/apps/details?id=me.rerere.rikkahub"
       >
         Tap **Install** on the Play listing for automatic updates and easy installation.
       </Card>
-      <Card
-        title="Official Website"
-        icon="download"
-        href="https://rikka-ai.com/download"
-      >
-        Download the APK directly from rikka-ai.com if the Play Store is unavailable in your region.
-      </Card>
     </CardGroup>
 
     Once installation is complete, open Rikka from your home screen or app drawer.
+
   </Step>
 
   <Step title="Open Settings and Add a Provider">
     Rikka needs at least one AI provider before you can chat. Navigate to the provider settings now.
 
-    1. Tap the **Settings** icon (gear) in the bottom navigation bar.
-    2. Select **Providers** from the settings menu.
-    3. Tap **Add Provider** and choose your provider type from the list.
+    1. Tap the **Settings** icon (gear) at the bottom of the sidebar.
+    2. Select **Provider Settings** from the settings menu.
+    3. Many providers are pre-configured — if yours is listed, just tap it and enter your API key. If not, tap the button in the top-right corner to create a new provider.
 
     <Tabs>
       <Tab title="OpenAI">
-        Select **OpenAI** from the provider list. OpenAI powers models like GPT-4o and GPT-4.1.
+        The most widely used API format. Enter the base URL and API key from your provider to complete the setup.
 
-        Get your API key at [platform.openai.com/api-keys](https://platform.openai.com/api-keys).
+        OpenAI has two API versions. **Chat Completions** is the default in RikkaHub and is the most popular format supported by the vast majority of providers. The newer **Responses API** is what OpenAI itself now prioritizes — if you are using the official OpenAI API or a relay that mirrors GPT models, switching to the Responses API is recommended. Tap **Use Responses API** to enable it.
       </Tab>
       <Tab title="Google Gemini">
-        Select **Google Gemini** from the provider list. Gemini powers models like Gemini 2.5 Pro and Gemini 2.0 Flash.
-
-        Get your API key at [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey).
+        Google's own API format, used exclusively for Google Gemini models.
       </Tab>
       <Tab title="Anthropic Claude">
-        Select **Anthropic Claude** from the provider list. Claude powers models like Claude Sonnet and Claude Opus.
-
-        Get your API key at [console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys).
-      </Tab>
-      <Tab title="OpenAI-Compatible">
-        Select **OpenAI-Compatible** from the provider list to connect any endpoint that follows the OpenAI API format — such as Ollama, OpenRouter, Mistral, or a self-hosted model.
-
-        Enter the **Base URL** of your endpoint (for example, `http://localhost:11434/v1` for a local Ollama instance) along with your API key if required.
+        The second most widely adopted API format after OpenAI. Used by Claude and a number of other models as well.
       </Tab>
     </Tabs>
+
   </Step>
 
   <Step title="Enter Your API Key">
     Paste your API key into the **API Key** field for the provider you selected.
 
+    If you are using an unofficial relay that is not built into RikkaHub, you will also need to set the provider's **Base URL** when creating a new provider.
+
     <Warning>
       Treat your API key like a password. Do not share it, and do not paste it into untrusted apps. Rikka stores your key locally on your device and never sends it to Rikka's servers — it goes directly to your chosen provider.
     </Warning>
 
-    After pasting your key, tap **Save** or **Confirm** to store the provider configuration. Rikka validates the key in the background and displays a green checkmark when the connection is successful.
+    After pasting your key, tap **Save** or **Confirm** to store the provider configuration.
+
   </Step>
 
-  <Step title="Pick a Model">
-    With your provider connected, choose the model you want to use for your first conversation.
+  <Step title="Add Models">
+    After configuring a provider, scroll to the **Models** section at the bottom of the provider screen and tap it.
 
-    1. From the **Providers** screen, tap the provider you just added.
-    2. Under **Default Model**, tap the model selector and browse the available models.
-    3. Choose a model — a good starting point is listed below for each provider.
+    Most providers support fetching the model list automatically — tap the expand button to load the list, then select the models you want to use.
 
-    | Provider | Recommended Starter Model |
-    |---|---|
-    | OpenAI | `gpt-4o-mini` |
-    | Google Gemini | `gemini-2.0-flash` |
-    | Anthropic Claude | `claude-3-5-haiku` |
-    | OpenAI-Compatible | Depends on your endpoint |
+    To remove a model you no longer need, swipe it to delete.
 
     <Note>
-      You can change the model at any time from within a conversation using the model picker in the chat toolbar. Your default model is just the starting point for new chats.
+      You can change the model at any time from within a conversation using the model picker in the chat toolbar.
     </Note>
+
+  </Step>
+
+  <Step title="Configure Default Models">
+    Go back to the Settings page and select **Default Models & Prompts** to set the default model for each feature module.
+
+    Beyond the chat model, other features (such as title generation and summarization) can each use a different model — a faster, cheaper model often works well for those tasks.
+
   </Step>
 
   <Step title="Start Your First Conversation">
-    You are ready to chat. Head back to the main screen and open a new conversation.
+    Everything is ready. Head back to the main screen and start a new conversation.
 
-    1. Tap the **Chat** icon in the bottom navigation bar to return to the conversation list.
-    2. Tap the **New Chat** button (pencil or plus icon) in the top-right corner.
-    3. Confirm that the correct provider and model are shown in the chat toolbar. Tap them to switch if needed.
-    4. Type your first message in the text field at the bottom and tap **Send**.
+    1. Tap the model selector button at the bottom-left to choose the model you want to use.
+    2. Type your first message in the text field and tap **Send**.
 
     Rikka streams the response back to you in real time. That's it — you're up and running!
 
     <Tip>
       Try a simple opener like *"Explain what you can help me with"* to get a feel for the model's capabilities before diving into more specific tasks.
     </Tip>
+
+    <Warning>
+      Avoid asking the model which model it is. Models do not have accurate self-awareness about their own identity — this is a fundamental property of how large language models work, not a bug in Rikka.
+
+      Official apps can answer this correctly because they inject a system prompt that tells the model its identity. RikkaHub does not include such a prompt by default, though you can add one yourself through the system prompt settings.
+    </Warning>
   </Step>
 </Steps>
-
-<Tip>
-  Rikka supports OpenAI, Google Gemini, Anthropic Claude, and any OpenAI-compatible API. See the **[Providers Overview](/providers/overview)** to learn how to add multiple providers and switch between them mid-conversation.
-</Tip>
 
 ## What to Explore Next
 
 <CardGroup cols={2}>
-  <Card
-    title="Providers Overview"
-    icon="plug"
-    href="/providers/overview"
-  >
+  <Card title="Providers Overview" icon="plug" href="/providers/overview">
     Add more providers and learn how to configure advanced options like custom base URLs and headers.
   </Card>
-  <Card
-    title="Custom Assistants"
-    icon="robot"
-    href="/assistants/overview"
-  >
+  <Card title="Custom Assistants" icon="robot" href="/assistants/overview">
     Create reusable assistants with custom system prompts, model defaults, and personalities.
   </Card>
-  <Card
-    title="MCP Extensions"
-    icon="puzzle"
-    href="/extensions/mcp"
-  >
+  <Card title="MCP Extensions" icon="puzzle" href="/extensions/mcp">
     Connect external tools and data sources to give your AI access to real-world actions.
   </Card>
-  <Card
-    title="Web Access"
-    icon="globe"
-    href="/settings/web-access"
-  >
+  <Card title="Web Access" icon="globe" href="/settings/web-access">
     Enable live web search so your AI can answer questions about current events and recent information.
   </Card>
 </CardGroup>
