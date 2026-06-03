@@ -30,16 +30,6 @@
             ]
           },
           {
-            "group": "Providers",
-            "pages": [
-              "providers/overview",
-              "providers/openai",
-              "providers/google",
-              "providers/claude",
-              "providers/custom"
-            ]
-          },
-          {
             "group": "Chat",
             "pages": [
               "chat/conversations",
@@ -84,16 +74,6 @@
               "zh/introduction",
               "zh/download",
               "zh/quickstart"
-            ]
-          },
-          {
-            "group": "模型提供商",
-            "pages": [
-              "zh/providers/overview",
-              "zh/providers/openai",
-              "zh/providers/google",
-              "zh/providers/claude",
-              "zh/providers/custom"
             ]
           },
           {
