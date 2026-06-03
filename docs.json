@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "name": "Rikka",
-  "theme": "almond",
+  "name": "RikkaHub",
+  "theme": "sequoia",
   "logo": {
     "light": "https://media.brand.dev/8cf16b70-1ceb-463e-943a-1265b3100013.svg",
     "dark": "https://media.brand.dev/8cf16b70-1ceb-463e-943a-1265b3100013.svg"
