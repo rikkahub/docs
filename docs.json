@@ -51,6 +51,7 @@
             "pages": [
               "extensions/mcp",
               "extensions/skills",
+              "extensions/workspace",
               "extensions/speech",
               "extensions/image-generation"
             ]
@@ -98,6 +99,7 @@
             "pages": [
               "zh/extensions/mcp",
               "zh/extensions/skills",
+              "zh/extensions/workspace",
               "zh/extensions/speech",
               "zh/extensions/image-generation"
             ]

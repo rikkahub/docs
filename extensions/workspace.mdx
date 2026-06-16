@@ -1,0 +1,125 @@
+---
+title: "Workspace"
+sidebarTitle: "Workspace"
+description: "A lightweight Linux environment for AI to handle agent tasks like file editing and creating presentations."
+---
+
+Workspace provides a lightweight Linux environment for AI, enabling it to manipulate files and complete tasks such as editing files, creating presentations, and more.
+An assistant can be bound to one workspace.
+
+## Quick Start
+
+<Steps>
+  <Step title="Create a Workspace">
+    1. Go to **Settings** → **Extension Management** → **Workspace** to open the workspace management page.
+    2. Tap the plus button in the bottom-right corner to create a new workspace and enter a name.
+    3. Tap the newly created workspace card to enter its management page, then tap **Install Rootfs** to install the system files.
+
+    <Note>
+      Workspace names must be in English.
+    </Note>
+  </Step>
+  <Step title="Manage and Configure">
+    On the workspace management page, you can:
+    - Configure whether tools provided by the workspace require user approval before execution
+    - Tap the **Files** tab to manage workspace files, including importing and exporting
+    - Tap the icon in the top-right corner to open the terminal
+  </Step>
+  <Step title="Use in Chat">
+    Go back to the chat page and tap the plus button in the chat bar. You will see a card for binding a workspace — tap it to bind to your target workspace.
+
+    Once bound, the AI can operate within the workspace to complete various tasks when you give it instructions.
+  </Step>
+</Steps>
+
+## Glossary
+
+| Term | Description |
+| --- | --- |
+| **Workspace** | An isolated Linux environment provided by Rikka for AI. Each workspace runs independently with its own filesystem and packages. |
+| **Terminal** | A built-in command-line interface within the workspace where you can run Linux commands to manage files, install software, or debug issues. |
+| **Rootfs** | Short for Root Filesystem — the base system files required for a workspace to run. Installing Rootfs is like installing an operating system for the workspace. |
+
+## Installing Common Packages
+
+Workspaces use the `apt` package manager by default. You can install packages manually via the terminal, or let the AI install what it needs during a task.
+
+<Tabs>
+  <Tab title="Essential Tools">
+    | Package | Purpose |
+    | --- | --- |
+    | `curl` | Send HTTP requests and download files |
+    | `unzip` / `zip` | Extract and create ZIP archives |
+    | `git` | Version control and repository cloning |
+    | `jq` | Parse and process JSON data |
+
+    ```bash
+    apt update && apt install -y curl unzip zip git jq
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```bash
+    apt update && apt install -y python3 python3-pip
+    ```
+  </Tab>
+  <Tab title="Node.js (nvm)">
+    Install Node.js via nvm for easy version management:
+
+    ```bash
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+    ```
+
+    After installation, reload the environment and install Node.js:
+
+    ```bash
+    source ~/.bashrc && nvm install --lts
+    ```
+  </Tab>
+</Tabs>
+
+<Tip>
+  In most cases you don't need to install packages manually — when you give the AI a task, it will automatically install any dependencies it needs.
+</Tip>
+
+## File Import & Export
+
+You can manage workspace files in two ways:
+
+<Tabs>
+  <Tab title="In-App Management">
+    Open the workspace management page and tap the **Files** menu button at the bottom to switch to the file management view. From here you can:
+    - Import files into the workspace
+    - Export files from the workspace
+    - Share files directly to other apps
+  </Tab>
+  <Tab title="System File Manager">
+    Open your system's file manager and look for a drive named **RikkaHub**. Inside, you'll find folders named after each workspace containing their files. You can copy, move, and delete files directly.
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+Here are some example use cases for reference.
+
+### Clone a Repository and Edit Files
+
+With a workspace bound, you can ask the AI to clone a Git repository and edit its files. For example, send a message like:
+
+> Clone https://github.com/user/repo and translate the README.md into Chinese
+
+The AI will perform the following steps in the workspace:
+
+1. Install `git` (if not already installed)
+2. Clone the target repository into the workspace
+3. Read the contents of `README.md`
+4. Translate the content into Chinese and write it back to the file
+
+Once complete, you can export the modified files through file management, or push to the remote repository.
+
+### Create a Presentation
+
+1. Go to **Extension Management** → **Agent Skills** and install the [pptx skill](https://github.com/anthropics/skills/tree/main/skills/pptx).
+2. In the chat page, tap the plus button, go to extension management, and enable the skill.
+3. Send your request — for example, ask the AI to research a topic and create a presentation.
+4. The AI will progressively gather information and use the Python / Node.js environment in the workspace to generate the PPT file.
+5. Once complete, go to the workspace management page to export or share the generated PPT file.

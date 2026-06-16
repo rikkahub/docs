@@ -1,0 +1,315 @@
+---
+title: "在 Rikka 中设置 TTS 和 ASR 语音服务"
+sidebarTitle: "语音"
+description: "在 Rikka 中配置 TTS 和 ASR 提供商，让 AI 回复可以朗读出来，也可以用麦克风语音输入消息而无需打字。"
+---
+
+Rikka 内置了文字转语音（TTS）——将 AI 回复朗读出来，以及自动语音识别（ASR）——用麦克风语音输入消息而无需打字的支持。你可以独立配置这两项功能，从多种云端和设备端提供商中选择。设置完成后，TTS 和 ASR 可以直接在聊天界面中使用，无需离开对话。
+
+导航到**设置 → 语音**以访问这两个标签页。
+
+<Tabs>
+  <Tab title="文字转语音（TTS）">
+
+    ## 设置 TTS
+
+    在**设置 → 语音**中打开 **TTS** 标签页。点击**添加提供商**并选择你要使用的提供商。填写必填字段，然后点击保存。你可以添加多个提供商，并随时在它们之间切换。
+
+    要朗读消息，请点击任意助手消息气泡上出现的**扬声器图标**。
+
+    ---
+
+    ### 可用的 TTS 提供商
+
+    <Accordion title="OpenAI TTS">
+
+    使用 OpenAI 的神经网络 TTS API。生成自然流畅的语音，提供六种预设声音可供选择。
+
+    <ParamField body="apiKey" type="string" required>
+      你的 OpenAI API 密钥。在 [OpenAI 控制台](https://platform.openai.com/api-keys)中获取。
+    </ParamField>
+
+    <ParamField body="baseUrl" type="string" default="https://api.openai.com/v1">
+      OpenAI 兼容 API 的基础 URL。如果你通过代理路由或使用第三方 OpenAI 兼容端点，请修改此项。
+    </ParamField>
+
+    <ParamField body="model" type="string" default="gpt-4o-mini-tts">
+      要使用的 TTS 模型。`gpt-4o-mini-tts` 速度快且性价比高；换用 `tts-1-hd` 可获得更高保真度的输出。
+    </ParamField>
+
+    <ParamField body="voice" type="string" default="alloy">
+      声音预设。OpenAI 提供 `alloy`、`echo`、`fable`、`onyx`、`nova` 和 `shimmer`。
+    </ParamField>
+
+    </Accordion>
+
+    <Accordion title="Gemini TTS">
+
+    使用 Google 的 Gemini 多模态 TTS。支持多种声音，包括表现力丰富的 Gemini 2.5 系列。
+
+    <ParamField body="apiKey" type="string" required>
+      你的 Google AI Studio API 密钥。
+    </ParamField>
+
+    <ParamField body="baseUrl" type="string" default="https://generativelanguage.googleapis.com/v1beta">
+      Gemini API 的基础 URL。
+    </ParamField>
+
+    <ParamField body="model" type="string" default="gemini-2.5-flash-preview-tts">
+      用于语音合成的 Gemini 模型。
+    </ParamField>
+
+    <ParamField body="voiceName" type="string" default="Kore">
+      声音名称。参考 [Google AI 声音列表](https://ai.google.dev/gemini-api/docs/speech-generation)查看所有可用选项。
+    </ParamField>
+
+    </Accordion>
+
+    <Accordion title="MiniMax TTS">
+
+    来自 MiniMax 的高质量中文及多语言 TTS。
+
+    <ParamField body="apiKey" type="string" required>
+      你的 MiniMax API 密钥。
+    </ParamField>
+
+    <ParamField body="baseUrl" type="string" default="https://api.minimaxi.com/v1">
+      MiniMax API 基础 URL。
+    </ParamField>
+
+    <ParamField body="model" type="string" default="speech-2.6-turbo">
+      TTS 模型标识符。
+    </ParamField>
+
+    <ParamField body="voiceId" type="string" default="female-shaonv">
+      声音 ID。在 MiniMax 控制台中浏览可用声音。
+    </ParamField>
+
+    <ParamField body="emotion" type="string" default="calm">
+      合成语音的情感色调，例如 `calm`、`happy`、`sad`。
+    </ParamField>
+
+    <ParamField body="speed" type="float" default="1.0">
+      播放速度倍率。低于 `1.0` 的值会减慢语速；高于 `1.0` 的值会加快语速。
+    </ParamField>
+
+    </Accordion>
+
+    <Accordion title="Qwen TTS">
+
+    阿里巴巴 DashScope 的 Qwen TTS，针对中文和多语言语音进行了优化。
+
+    <ParamField body="apiKey" type="string" required>
+      你的 DashScope API 密钥。
+    </ParamField>
+
+    <ParamField body="baseUrl" type="string" default="https://dashscope.aliyuncs.com/api/v1">
+      DashScope API 基础 URL。
+    </ParamField>
+
+    <ParamField body="model" type="string" default="qwen3-tts-flash">
+      TTS 模型。`qwen3-tts-flash` 是低延迟变体。
+    </ParamField>
+
+    <ParamField body="voice" type="string" default="Cherry">
+      声音名称。查看 DashScope 文档获取完整列表。
+    </ParamField>
+
+    <ParamField body="languageType" type="string" default="Auto">
+      语言提示。`Auto` 让模型自动检测语言。
+    </ParamField>
+
+    </Accordion>
+
+    <Accordion title="Groq TTS">
+
+    通过 Groq 推理基础设施提供的快速 TTS，由 Orpheus 模型驱动。
+
+    <ParamField body="apiKey" type="string" required>
+      你的 Groq API 密钥。
+    </ParamField>
+
+    <ParamField body="baseUrl" type="string" default="https://api.groq.com/openai/v1">
+      Groq API 基础 URL。
+    </ParamField>
+
+    <ParamField body="model" type="string" default="canopylabs/orpheus-v1-english">
+      要使用的 Orpheus TTS 模型。
+    </ParamField>
+
+    <ParamField body="voice" type="string" default="austin">
+      声音预设名称。
+    </ParamField>
+
+    </Accordion>
+
+    <Accordion title="xAI TTS">
+
+    通过 xAI 的 Grok API 提供的文字转语音服务。
+
+    <ParamField body="apiKey" type="string" required>
+      你的 xAI API 密钥。
+    </ParamField>
+
+    <ParamField body="baseUrl" type="string" default="https://api.x.ai/v1">
+      xAI API 基础 URL。
+    </ParamField>
+
+    <ParamField body="voiceId" type="string" default="eve">
+      声音标识符。
+    </ParamField>
+
+    <ParamField body="language" type="string" default="auto">
+      BCP-47 语言标签或 `auto` 以自动检测。
+    </ParamField>
+
+    </Accordion>
+
+    <Accordion title="MiMo TTS">
+
+    由小米 MiMo 服务提供的 TTS。
+
+    <ParamField body="apiKey" type="string" required>
+      你的 MiMo API 密钥。
+    </ParamField>
+
+    <ParamField body="baseUrl" type="string" default="https://api.xiaomimimo.com/v1">
+      MiMo API 基础 URL。
+    </ParamField>
+
+    <ParamField body="model" type="string" default="mimo-v2-tts">
+      TTS 模型标识符。
+    </ParamField>
+
+    <ParamField body="voice" type="string" default="mimo_default">
+      声音预设。
+    </ParamField>
+
+    </Accordion>
+
+    <Accordion title="系统 TTS">
+
+    使用 Android 内置的文字转语音引擎。无需 API 密钥——完全在设备端运行，使用你在 Android 设置中安装的语音包。
+
+    <ParamField body="speechRate" type="float" default="1.0">
+      合成语音的速度。`1.0` 为正常速度；增大值可加快播放，减小值可放慢播放。
+    </ParamField>
+
+    <ParamField body="pitch" type="float" default="1.0">
+      合成语音的音调。`1.0` 为所选 Android 声音的默认音调。
+    </ParamField>
+
+    <Note>
+      系统 TTS 的质量和语言支持取决于设备上安装的语音包。你可以在 **Android 设置 → 无障碍 → 文字转语音输出**中安装额外的语音包。
+    </Note>
+
+    </Accordion>
+
+  </Tab>
+  <Tab title="自动语音识别（ASR）">
+
+    ## 设置 ASR
+
+    在**设置 → 语音**中打开 **ASR** 标签页。点击**添加提供商**并选择你偏好的提供商。保存后，聊天输入栏中会出现一个**麦克风图标**。点击并按住它来录制你的语音；Rikka 会转录音频并自动将文本插入消息输入框。
+
+    ---
+
+    ### 可用的 ASR 提供商
+
+    <Accordion title="OpenAI 实时 ASR">
+
+    通过 WebSocket 连接将音频流式传输到 OpenAI 的实时转录 API，提供低延迟、实时转录和语音活动检测（VAD）。
+
+    <ParamField body="apiKey" type="string" required>
+      你的 OpenAI API 密钥。
+    </ParamField>
+
+    <ParamField body="websocketUrl" type="string" default="wss://api.openai.com/v1/realtime?intent=transcription">
+      实时转录 API 的 WebSocket 端点。
+    </ParamField>
+
+    <ParamField body="model" type="string" default="gpt-4o-transcribe">
+      转录模型。`gpt-4o-transcribe` 提供最佳准确率。
+    </ParamField>
+
+    <ParamField body="language" type="string">
+      BCP-47 语言代码（例如 `en`、`zh`、`ja`）。留空以启用自动语言检测。
+    </ParamField>
+
+    <ParamField body="vadThreshold" type="float" default="0.5">
+      语音活动检测灵敏度，范围从 `0.0`（最灵敏）到 `1.0`（最不灵敏）。在嘈杂环境中增大此值以减少误触发。
+    </ParamField>
+
+    <ParamField body="silenceDurationMs" type="integer" default="500">
+      Rikka 在将语音视为结束并最终确定转录之前等待的静音毫秒数。
+    </ParamField>
+
+    </Accordion>
+
+    <Accordion title="DashScope ASR（Qwen）">
+
+    来自阿里云 DashScope 的实时流式 ASR，由 Qwen 语音模型驱动，针对中文和多语言音频进行了优化。
+
+    <ParamField body="apiKey" type="string" required>
+      你的 DashScope API 密钥。
+    </ParamField>
+
+    <ParamField body="websocketUrl" type="string" default="wss://dashscope.aliyuncs.com/api-ws/v1/inference">
+      DashScope WebSocket 推理端点。
+    </ParamField>
+
+    <ParamField body="model" type="string" default="qwen3-asr-flash-realtime">
+      ASR 模型标识符。`flash-realtime` 变体优先考虑低延迟。
+    </ParamField>
+
+    <ParamField body="language" type="string">
+      语言代码提示。留空以自动检测。
+    </ParamField>
+
+    <ParamField body="vadThreshold" type="float" default="0.2">
+      VAD 灵敏度。较低的值会使检测器更积极地截断静音。
+    </ParamField>
+
+    </Accordion>
+
+    <Accordion title="火山引擎 ASR">
+
+    来自字节跳动火山引擎平台的流式 ASR（通过 SeedASR 模型），非常适合普通话和多口音语音。
+
+    <ParamField body="apiKey" type="string" required>
+      你的火山引擎 API 密钥。
+    </ParamField>
+
+    <ParamField body="websocketUrl" type="string" default="wss://openspeech.bytedance.com/api/v3/sauc/bigmodel">
+      火山引擎 ASR WebSocket 端点。
+    </ParamField>
+
+    <ParamField body="resourceId" type="string" default="volc.seedasr.sauc.duration">
+      ASR 服务的火山引擎资源标识符。
+    </ParamField>
+
+    <ParamField body="language" type="string">
+      语言代码。留空以依赖模型内置的语言检测。
+    </ParamField>
+
+    </Accordion>
+
+  </Tab>
+</Tabs>
+
+## 在聊天界面中使用语音
+
+当你在每个类别中至少配置了一个提供商后，控件会直接出现在聊天界面中：
+
+<CardGroup cols={2}>
+  <Card title="麦克风（ASR）" icon="microphone">
+    点击聊天输入栏中的**麦克风图标**开始录音。自然地说出你的消息——Rikka 会将音频流式传输到你的 ASR 提供商，并在转录出文字时实时填充文本框。松开或再次点击即可停止。
+  </Card>
+  <Card title="扬声器（TTS）" icon="volume-high">
+    点击任意助手消息上的**扬声器图标**，让你配置的 TTS 提供商朗读消息。再次点击可在朗读中途停止。
+  </Card>
+</CardGroup>
+
+<Tip>
+  如果你主要使用语音输入，建议将 ASR 与低延迟的 TTS 提供商搭配使用，这样整个对话可以自然流畅地进行，无需在键盘之间切换。
+</Tip>

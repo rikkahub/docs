@@ -1,0 +1,132 @@
+---
+title: "在 Rikka 中设置 MCP 服务器以访问外部工具"
+sidebarTitle: "MCP"
+description: "在 Rikka 中添加和配置 MCP 服务器，让你的 AI 助手能够访问 Android 设备上的外部工具、API 和真实数据源。"
+---
+
+Model Context Protocol（MCP）是一个开放标准，允许 AI 模型安全地访问外部工具、API 和数据源。Rikka 将 MCP 作为核心功能实现，因此你可以接入任何兼容的 MCP 服务器，并立即将其工具暴露给你的助手——从网页搜索和代码执行到数据库查询和自定义业务逻辑。
+
+## 添加 MCP 服务器
+
+<Steps>
+  <Step title="打开 MCP 设置">
+    导航到**设置 → MCP**。你会看到所有已配置服务器的列表及其当前连接状态（空闲、连接中、已连接、重连中或错误）。
+  </Step>
+  <Step title="点击添加服务器">
+    点击右上角的 **+** 按钮。选择与你的服务器匹配的传输类型。
+  </Step>
+  <Step title="配置服务器">
+    填写服务器详情（参见下方的[传输类型](#传输类型)和[服务器选项](#服务器选项)），然后保存。
+  </Step>
+  <Step title="等待连接">
+    Rikka 会自动连接并同步服务器暴露的工具列表。绿色的**已连接**指示器确认握手成功。如果连接断开，Rikka 会以指数退避的方式自动重试，直到将服务器标记为错误状态。
+  </Step>
+</Steps>
+
+<Note>
+  MCP 服务器必须在互联网上公开可达，或与你的 Android 设备处于同一局域网中。位于防火墙或企业 VPN 后面的服务器需要在设备上先连接 VPN，Rikka 才能访问。
+</Note>
+
+## 传输类型
+
+Rikka 支持两种 MCP 传输机制。两者都只需要一个 URL 端点——选择你的服务器所支持的类型即可。
+
+<CardGroup cols={2}>
+  <Card title="SSE（Server-Sent Events）" icon="signal-stream">
+    最初的 MCP 传输方式。客户端打开一个持久 HTTP 连接，服务器通过该连接推送事件。提供完整的 SSE 端点 URL，例如 `https://mcp.example.com/sse`。
+  </Card>
+  <Card title="Streamable HTTP" icon="arrows-up-down">
+    MCP 规范中定义的较新的推荐传输方式。使用标准 HTTP 请求配合分块流传输。提供服务器的基础 URL，例如 `https://mcp.example.com/mcp`。
+  </Card>
+</CardGroup>
+
+## 服务器选项
+
+每个服务器都有一组通用选项，你可以在添加或编辑时进行配置。
+
+<ParamField body="name" type="string" required>
+  该服务器的可读显示名称。显示在 MCP 服务器列表和助手设置选择器中。
+</ParamField>
+
+<ParamField body="enable" type="boolean" default="true">
+  在不删除服务器的情况下开启或关闭它。禁用后，Rikka 会关闭连接，并且不会将该服务器的工具暴露给任何助手。
+</ParamField>
+
+<ParamField body="url" type="string" required>
+  MCP 端点的完整 URL。对于 SSE 服务器，通常是以 `/sse` 结尾的路径；对于 Streamable HTTP 服务器，则是 MCP 基础路径。
+</ParamField>
+
+<ParamField body="headers" type="list of key-value pairs">
+  随每个请求发送到该服务器的自定义 HTTP 头。用于传递身份验证令牌、API 密钥或服务器要求的任何其他请求元数据。以名称-值对的形式添加每个头，例如 `Authorization: Bearer <token>`。
+</ParamField>
+
+## 单个工具选项
+
+Rikka 连接并同步后，会列出服务器暴露的每个工具。你可以单独控制每个工具。
+
+<ParamField body="enable" type="boolean" default="true">
+  启用或禁用该服务器的特定工具。被禁用的工具会从助手的工具列表中隐藏，即使服务器已连接也不会被调用。
+</ParamField>
+
+<ParamField body="needsApproval" type="boolean" default="false">
+  开启后，Rikka 会在执行该工具前显示确认对话框。对于任何执行不可逆操作的工具——文件写入、发送邮件、购买——使用此选项，以便你始终掌控 AI 的实际行为。
+</ParamField>
+
+<Tip>
+  对任何会修改数据或触发外部副作用的工具启用**需要审批**。你可以快速审批通过，同时防止模型以你不希望的方式自主行动。
+</Tip>
+
+## 将 MCP 服务器附加到助手
+
+将服务器添加到 Rikka 的全局列表并不会自动将其暴露给你的助手。你必须为每个助手单独启用。
+
+<Steps>
+  <Step title="打开助手设置">
+    在主屏幕上长按一个助手，或点击助手名称然后点击**编辑**（铅笔图标）来打开其设置。
+  </Step>
+  <Step title="找到 MCP 服务器部分">
+    向下滚动到 **MCP 服务器**。你会看到全局 MCP 列表中当前已启用的所有服务器。
+  </Step>
+  <Step title="切换你需要的服务器">
+    启用该助手应该有权访问的服务器。只有在此处勾选的服务器的工具才会出现在助手的工具调用中。
+  </Step>
+</Steps>
+
+## 通过 JSON 导入服务器配置
+
+如果某个服务提供了现成的 MCP 配置文件，你可以直接导入，而无需手动输入所有详情。
+
+<Steps>
+  <Step title="复制或下载 JSON 配置">
+    配置应该是一个 JSON 对象，按照 Rikka 的配置模式描述一个或多个 MCP 服务器。
+  </Step>
+  <Step title="打开 MCP 设置并点击导入">
+    在**设置 → MCP** 中，点击导入图标并粘贴或加载 JSON。Rikka 会验证并将服务器合并到你的现有列表中。
+  </Step>
+</Steps>
+
+一个最简的单服务器 SSE 配置示例如下：
+
+```json
+{
+  "type": "sse",
+  "commonOptions": {
+    "name": "My MCP Server",
+    "enable": true,
+    "headers": [
+      ["Authorization", "Bearer my-secret-token"]
+    ]
+  },
+  "url": "https://mcp.example.com/sse"
+}
+```
+
+## 连接状态参考
+
+| 状态 | 含义 |
+|--------|---------|
+| **空闲** | 服务器已禁用或尚未启动。 |
+| **连接中** | Rikka 正在建立初始连接。 |
+| **已连接** | 握手完成；工具可用。 |
+| **重连中** | 连接已断开；Rikka 正在以指数退避方式重试。 |
+| **错误** | 所有重试均已失败。请检查 URL、请求头和服务器可用性。 |

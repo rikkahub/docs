@@ -1,0 +1,98 @@
+---
+title: "技能：助手的可复用能力包"
+sidebarTitle: "技能"
+description: "将提示词指令打包为可复用的技能，安装一次即可在任何 Rikka 助手上启用，还可通过 GitHub 分享或导入。"
+---
+
+技能是独立的指令和配置包，用于扩展助手的能力。你可以将技能理解为一个插件——安装一次，然后在任何你喜欢的助手上启用。一个技能可以教会助手以特定风格写作、遵循特定领域的推理流程，或调用一组特定的工具——所有这些都定义在一个可移植的包中，你可以分享、从 GitHub 导入，或自己编写。
+
+## 浏览和管理技能
+
+打开**设置 → 扩展管理 → 技能**，查看设备上安装的所有技能。每张卡片显示技能名称、简短描述，以及作者提供的兼容性说明（如果有的话），指明哪些模型或提供商效果最佳。
+
+<CardGroup cols={2}>
+  <Card title="从 GitHub 导入" icon="github">
+    点击 **+** 并选择**从 GitHub 导入**。粘贴仓库 URL，例如 `https://github.com/owner/repo`。Rikka 会直接从仓库的默认分支下载技能文件。
+  </Card>
+  <Card title="从文件导入" icon="file-import">
+    点击 **+** 并选择**从文件导入**。从设备中选择一个 `.zip` 压缩包或纯文本文件。Rikka 会解压技能并将其添加到列表中。
+  </Card>
+  <Card title="手动创建" icon="pen">
+    点击 **+** 并选择**手动添加**。直接粘贴技能内容——Rikka 会读取 YAML frontmatter 自动提取技能的名称和描述。
+  </Card>
+  <Card title="删除技能" icon="trash">
+    点击任意技能卡片上的 **⋮** 菜单，选择**删除**。Rikka 会将该技能从所有已启用它的助手中移除。
+  </Card>
+</CardGroup>
+
+## 技能文件格式
+
+每个技能都围绕一个 `SKILL.md` 文件构建，Rikka 在加载技能时会读取该文件。文件以 YAML frontmatter 块开头，后接指令正文。
+
+```markdown
+---
+name: code-reviewer
+description: "Performs thorough code review with style and security feedback"
+compatibility: "Works best with GPT-4o, Claude 3.5+"
+allowed-tools: read_file, search
+---
+
+You are an expert code reviewer. When given a code snippet or file, you:
+1. Check for logic errors and edge cases
+2. Identify security vulnerabilities
+3. Suggest style improvements aligned with the project's conventions
+...
+```
+
+<Accordion title="Frontmatter 字段">
+
+| 字段 | 必填 | 描述 |
+|-------|----------|-------------|
+| `name` | ✅ | 技能的唯一标识符。必须非空且 URL 安全。 |
+| `description` | ✅ | 显示在技能卡片上的一行摘要。 |
+| `compatibility` | ✗ | 关于哪些模型或提供商效果最佳的自由文本提示。 |
+| `allowed-tools` | ✗ | 此技能设计使用的工具名称列表，以空格分隔。 |
+
+</Accordion>
+
+## 查看和编辑技能文件
+
+点击任意技能卡片打开**技能详情**页面。你会看到一个可折叠的文件树，显示技能目录中的每个文件。
+
+- 点击文件旁边的**铅笔**图标，在内置文本编辑器中编辑其内容。
+- 点击**垃圾桶**图标删除文件（不能删除 `SKILL.md`）。
+- 点击 **+** 浮动按钮添加新文件，可以使用路径创建子文件夹，例如 `examples/basic.md`。
+
+<Warning>
+  直接编辑 `SKILL.md` 会更改技能的指令。如果你是从 GitHub 导入的技能，你的编辑不会同步回上游仓库——如果你计划做重大更改，请保留备份。
+</Warning>
+
+## 在助手上启用技能
+
+全局安装技能并不会自动为任何助手激活。你需要选择哪些助手使用每个技能。
+
+<Steps>
+  <Step title="打开助手设置">
+    在主屏幕上长按一个助手，或点击助手名称然后点击**编辑**图标来打开其设置页面。
+  </Step>
+  <Step title="找到已启用技能部分">
+    向下滚动到**已启用技能**。此处会显示所有当前已安装的技能作为开关。
+  </Step>
+  <Step title="切换你需要的技能">
+    启用该助手应激活的技能。助手的系统提示词会在推理时附加上技能的指令正文。
+  </Step>
+  <Step title="测试助手">
+    与助手开始新的对话，验证其行为是否符合技能的指令。
+  </Step>
+</Steps>
+
+<Tip>
+  你可以在单个助手上启用多个技能。请注意，每个激活技能的指令都会被注入到系统提示词中，因此非常大或数量过多的技能可能会占用模型上下文窗口的较大部分。
+</Tip>
+
+## 分享技能
+
+由于每个技能只是一个纯文本文件目录，分享非常简单：
+
+- **打包发送**：压缩技能文件夹，通过任何即时通讯应用或文件传输方式分享 `.zip` 文件。接收者通过**从文件导入**即可导入。
+- **GitHub 仓库**：将技能目录发布为公开的 GitHub 仓库。任何拥有 URL 的人都可以直接导入到 Rikka。

@@ -1,0 +1,197 @@
+---
+title: "备份和恢复你的 Rikka 对话与设置"
+sidebarTitle: "备份"
+description: "将对话和设置导出为本地文件，自动同步到 WebDAV 或 S3 兼容存储，并设置提醒以确保数据安全。"
+---
+
+Rikka 将你的所有对话、设置和提供商配置存储在设备上。使用备份页面来保护这些数据：导出便携的 ZIP 文件进行手动保管，将增量备份推送到 WebDAV 或 S3 服务器，或者设置定期提醒以督促你及时备份。前往**设置 → 备份**开始使用。
+
+备份页面分为四个标签：**WebDAV**、**S3**、**导入/导出**和**提醒**。
+
+---
+
+## 手动导入/导出
+
+**导入/导出**标签让你创建数据的完整快照，并在需要时随时恢复——无需云账户。
+
+### 导出你的数据
+
+<Steps>
+  <Step title="打开设置 → 备份 → 导入/导出">
+    点击**导入/导出**标签。
+  </Step>
+  <Step title="点击导出">
+    在*本地备份/导出*下点击**导出**项。系统文件选择器会打开。
+  </Step>
+  <Step title="选择保存位置">
+    导航到一个文件夹——本地存储、SD 卡或已连接的云端硬盘——然后确认。Rikka 会保存一个包含完整数据库和关联文件的 ZIP 文件。
+  </Step>
+</Steps>
+
+### 从备份文件导入
+
+<Steps>
+  <Step title="点击导入">
+    在*本地备份/导出*下点击**导入**项。系统文件选择器会打开，并筛选为 `.zip` 文件。
+  </Step>
+  <Step title="选择你的备份 ZIP 文件">
+    找到并点击你之前导出的备份文件。
+  </Step>
+  <Step title="重启 Rikka">
+    恢复成功后，Rikka 会显示重启提示。点击**重启**以应用恢复的数据。
+  </Step>
+</Steps>
+
+<Note>
+  手动导出是迁移到新 Android 设备的推荐方法。通过数据线、蓝牙或文件分享应用将 ZIP 文件复制到新设备，然后导入即可。
+</Note>
+
+### 从其他应用导入
+
+Rikka 还可以导入其他 AI 聊天应用导出的对话历史。
+
+<Tabs>
+  <Tab title="Chatbox">
+    点击**从 Chatbox 导入**，然后选择 Chatbox 生成的 `.json` 导出文件。Rikka 会解析对话格式并将历史记录合并到本地数据库中。
+  </Tab>
+  <Tab title="Cherry Studio">
+    点击**从 Cherry Studio 导入**，然后选择 `.zip` 导出文件。Rikka 会自动提取并转换 Cherry Studio 的备份格式。
+  </Tab>
+</Tabs>
+
+---
+
+## WebDAV 同步
+
+**WebDAV** 标签将 Rikka 连接到任何兼容 WebDAV 的服务器，实现自动云端备份和恢复。
+
+<Note>
+  WebDAV 同步兼容 **Nextcloud**、**ownCloud** 以及任何实现了 WebDAV 协议的服务器——包括许多 NAS 设备。
+</Note>
+
+### 配置 WebDAV 连接
+
+<Steps>
+  <Step title="打开设置 → 备份 → WebDAV">
+    点击备份页面上的 **WebDAV** 标签。
+  </Step>
+  <Step title="输入服务器 URL">
+    将你的 WebDAV 端点 URL 粘贴到**服务器地址**字段中。对于 Nextcloud，通常是 `https://your-server.com/remote.php/dav/files/username/`。
+  </Step>
+  <Step title="输入凭据">
+    填写你的**用户名**和**密码**。对于 Nextcloud，建议在*个人设置 → 安全*中生成专用的应用密码，而不是使用主账户密码。
+  </Step>
+  <Step title="设置远程路径">
+    在**路径**字段中输入服务器上用于存储备份的文件夹路径。默认值为 `rikkahub_backups`。如果文件夹不存在，Rikka 会自动创建。
+  </Step>
+  <Step title="选择备份内容">
+    切换**聊天记录**和**文件**选项来包含或排除各项内容类型。
+  </Step>
+  <Step title="测试连接">
+    点击**测试连接**以验证 Rikka 能否使用提供的凭据访问服务器。成功的提示消息会确认一切正常。
+  </Step>
+</Steps>
+
+### 立即备份
+
+点击 WebDAV 标签底部的**立即备份**按钮。Rikka 会将带有时间戳的 ZIP 文件上传到你配置的远程路径，并更新标签顶部显示的*上次备份*时间戳。
+
+### 从 WebDAV 恢复
+
+<Steps>
+  <Step title="点击恢复">
+    点击**恢复**按钮。Rikka 会从远程路径获取可用的备份文件列表，并在底部弹出窗口中显示。
+  </Step>
+  <Step title="选择一个备份文件">
+    每个文件显示其名称、最后修改日期和大小。点击你想要恢复的文件旁的**立即恢复**。
+  </Step>
+  <Step title="重启 Rikka">
+    恢复成功后，在提示时点击**重启**。
+  </Step>
+</Steps>
+
+你还可以在恢复弹出窗口中点击文件旁的**删除**来删除单个备份文件。
+
+---
+
+## S3 同步
+
+**S3** 标签将 Rikka 连接到任何兼容 S3 的对象存储服务。
+
+<Note>
+  S3 同步适用于 **AWS S3**、**Cloudflare R2**、**MinIO**、**Backblaze B2** 以及任何实现了 S3 API 的其他服务。
+</Note>
+
+### 配置 S3 连接
+
+<Steps>
+  <Step title="打开设置 → 备份 → S3">
+    点击备份页面上的 **S3** 标签。
+  </Step>
+  <Step title="输入端点 URL">
+    将 S3 兼容端点粘贴到**端点**字段中。对于 AWS S3，使用 `https://s3.amazonaws.com`。对于 Cloudflare R2，使用你的账户专属 R2 端点。
+  </Step>
+  <Step title="输入你的 Access Key ID">
+    填写 **Access Key ID** 字段。建议创建一个具有最小必要权限（`s3:GetObject`、`s3:PutObject`、`s3:DeleteObject`、`s3:ListBucket`）的专用 IAM 用户或 API 令牌。
+  </Step>
+  <Step title="输入你的 Secret Access Key">
+    填写 **Secret Access Key** 字段。该值默认被遮盖；点击眼睛图标可显示。
+  </Step>
+  <Step title="设置存储桶和区域">
+    输入**存储桶**名称（例如 `my-rikka-backups`）。输入**区域**——对于 Cloudflare R2 使用 `auto`，对于 AWS 使用区域代码如 `us-east-1`。默认区域为 `auto`。
+  </Step>
+  <Step title="选择备份内容">
+    切换**聊天记录**和**文件**选项来包含或排除各项内容类型。
+  </Step>
+  <Step title="测试连接">
+    点击**测试连接**以验证连接和权限。
+  </Step>
+</Steps>
+
+### 立即备份
+
+点击**立即备份**。Rikka 会将带有时间戳的 ZIP 文件上传到配置的存储桶，并更新*上次备份*时间戳。
+
+### 从 S3 恢复
+
+<Steps>
+  <Step title="点击恢复">
+    点击**恢复**按钮。Rikka 会在底部弹出窗口中列出存储桶中所有的备份对象。
+  </Step>
+  <Step title="选择一个备份">
+    每条记录显示其名称、修改日期和大小。点击**立即恢复**以从该文件恢复。
+  </Step>
+  <Step title="重启 Rikka">
+    在提示时点击**重启**以应用恢复的数据。
+  </Step>
+</Steps>
+
+你还可以在恢复弹出窗口中点击条目旁的**删除**来删除单个备份对象。
+
+---
+
+## 备份提醒
+
+**提醒**标签通过在上次备份过期时发送通知，帮助你养成定期备份的习惯。
+
+<Steps>
+  <Step title="打开设置 → 备份 → 提醒">
+    点击**提醒**标签。
+  </Step>
+  <Step title="启用提醒">
+    开启**启用提醒**。
+  </Step>
+  <Step title="设置间隔">
+    选择 Rikka 提醒你的频率：**1**、**3**、**7**、**14** 或 **30** 天。默认为 7 天。
+  </Step>
+</Steps>
+
+启用后，Rikka 会在每次启动时检查距上次备份是否已超过设定的间隔。如果已超过，会弹出通知提醒你进行备份。
+
+上次备份时间会在你运行 WebDAV 或 S3 备份时自动更新。对于手动导出，时间戳会在每次成功导出后更新。
+
+<Tip>
+  将 7 天提醒与 WebDAV 或 S3 同步搭配使用，这样当提醒触发时，你可以一键备份，无需离开应用。
+</Tip>
+
+---

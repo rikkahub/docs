@@ -1,0 +1,171 @@
+---
+title: "助手：角色、模型与设置"
+sidebarTitle: "概览"
+description: "创建和管理可复用的 AI 角色，将系统提示词、模型选择和生成设置捆绑到一个可切换的配置文件中。"
+---
+
+助手是保存好的配置，赋予 AI 独特的身份和行为。每个助手存储一个系统提示词、一个可选的模型覆盖、生成参数以及一系列高级选项——这样你可以在编程助手、创意写作伙伴和语言导师之间一键切换，无需重新配置任何内容。
+
+## 创建助手
+
+<Steps>
+  <Step title="打开设置">
+    在主屏幕点击设置图标，打开设置菜单。
+  </Step>
+  <Step title="导航到助手">
+    从列表中选择**助手**。
+  </Step>
+  <Step title="添加新助手">
+    点击右上角的 **+** 按钮。输入助手名称，然后点击**保存**。
+  </Step>
+  <Step title="配置助手">
+    点击新创建的助手卡片，打开其详细页面并填写下方描述的各项字段。
+  </Step>
+</Steps>
+
+## 导入 SillyTavern 角色卡
+
+Rikka 可以导入标准 SillyTavern 格式的角色卡，让你无需手动设置即可直接使用社区创建的角色。
+
+<Steps>
+  <Step title="打开创建面板">
+    在助手屏幕点击 **+** 按钮。
+  </Step>
+  <Step title="选择文件格式">
+    点击 **Import Tavern PNG** 选择角色卡图片，或点击 **Import Tavern JSON** 选择 JSON 文件。
+  </Step>
+  <Step title="确认导入">
+    Rikka 读取嵌入的元数据，自动构建系统提示词，并保存助手——包括将角色卡的图片设为聊天背景。
+  </Step>
+</Steps>
+
+<Note>
+  Rikka 支持角色卡规范版本 **v2** 和 **v3**。导入角色卡会自动填充名称、系统提示词、描述、性格、场景和首条消息。
+</Note>
+
+## 基本配置
+
+<CardGroup cols={2}>
+  <Card title="身份" icon="user">
+    设置助手的**名称**和**头像**，便于一眼识别。启用**使用助手头像**后，聊天中将显示助手头像代替模型图标。
+  </Card>
+  <Card title="模型覆盖" icon="cpu">
+    设置**聊天模型**将此助手固定到特定的提供商和模型。留空则使用当前选定的全局默认模型。
+  </Card>
+  <Card title="系统提示词" icon="message-square">
+    编写定义助手思考和回复方式的核心指令。系统提示词在每次对话开始时发送。你可以在系统提示词中使用[占位符变量](/zh/assistants/prompt-injection#placeholder-variables)。
+  </Card>
+  <Card title="标签" icon="tag">
+    分配标签来整理你的助手。使用助手屏幕上的标签过滤栏快速找到所需的助手。
+  </Card>
+</CardGroup>
+
+## 关键设置参考
+
+### 生成设置
+
+<ParamField path="temperature" type="float | null" default="null">
+  控制回复的随机性。值的范围从 `0`（确定性）到 `2`（非常有创意）。留空则使用模型的默认值。
+</ParamField>
+
+<ParamField path="topP" type="float | null" default="null">
+  核采样阈值。较低的值将模型限制在更高概率的 token 上。留空则使用模型的默认值。避免同时设置 `temperature` 和 `topP`。
+</ParamField>
+
+<ParamField path="maxTokens" type="int | null" default="null">
+  模型在单次回复中可生成的最大 token 数量。留空则不设显式上限。
+</ParamField>
+
+<ParamField path="reasoningLevel" type="enum" default="AUTO">
+  控制模型在回答前进行多少链式思考推理。`AUTO` 让模型自行决定。
+</ParamField>
+
+<ParamField path="streamOutput" type="boolean" default="true">
+  启用后，助手的回复会在生成时逐 token 流式输出。如果你更希望一次性收到完整回复，可以禁用此选项。
+</ParamField>
+
+### 上下文与历史
+
+<ParamField path="contextMessageSize" type="int" default="0">
+  每次请求中包含的最近消息数量上限。设为 `0` 则包含所有消息。减小此值可降低长对话的 token 用量。
+</ParamField>
+
+### 预设消息
+
+<ParamField path="presetMessages" type="list">
+  在任何用户输入之前，始终添加到对话开头的消息列表。使用预设消息可以注入固定示例、角色预热对话或每次与该助手对话都应包含的样板上下文。
+</ParamField>
+
+### HTTP 覆盖
+
+<ParamField path="customHeaders" type="list">
+  此助手每次请求时发送的额外 HTTP 标头。适用于通过代理路由或满足自定义身份验证需求。
+</ParamField>
+
+<ParamField path="customBodies" type="list">
+  合并到每个请求体中的额外字段。用于传递 Rikka 未直接暴露的提供商特定参数。
+</ParamField>
+
+### 工具与集成
+
+<ParamField path="mcpServers" type="list">
+  此助手可以调用的 MCP（Model Context Protocol）服务器。不在此列表中的服务器的工具对模型不可见。
+</ParamField>
+
+<ParamField path="localTools" type="list" default="[TimeInfo]">
+  此助手可用的内置设备工具。**TimeInfo** 默认包含，允许模型查询当前日期和时间。
+</ParamField>
+
+<ParamField path="enabledSkills" type="set">
+  此助手已激活的技能名称集合。技能扩展了助手在标准聊天之外的能力，例如网络搜索或图片生成，具体取决于你的配置支持。
+</ParamField>
+
+### 外观
+
+<ParamField path="background" type="string | null" default="null">
+  在此助手的聊天视图中显示的自定义背景图片 URI。导入 SillyTavern 角色卡会自动设置此项。
+</ParamField>
+
+<ParamField path="backgroundOpacity" type="float" default="1.0">
+  背景图片的不透明度，从 `0.0`（不可见）到 `1.0`（完全不透明）。
+</ParamField>
+
+## 在聊天中切换助手
+
+点击聊天工具栏中显示的助手名称或头像以打开选择器。选择任意助手即可将其角色和设置应用到当前或下一次对话。更改对新消息立即生效。
+
+## 快捷消息
+
+快捷消息是可以附加到助手上的预编写消息模板，在对话中一键发送——非常适合"总结上文"或"翻译成英文"等常用提示。
+
+<Steps>
+  <Step title="创建快捷消息">
+    前往**设置 → 快捷消息**，点击 **+** 创建一个包含标题和内容的模板。
+  </Step>
+  <Step title="附加到助手">
+    打开助手的**扩展**标签页，选择**快捷消息**子标签页，然后开启你想要使用的消息。
+  </Step>
+  <Step title="在聊天中使用">
+    点击聊天工具栏中的快捷消息图标，查看已附加的模板并即时发送。
+  </Step>
+</Steps>
+
+## 正则表达式转换器
+
+正则表达式转换器允许你定义查找和替换规则，在消息显示或发送之前运行。这对于清理输出、重新格式化引用或应用外观修改非常有用。
+
+每条规则包含以下字段：
+
+| 字段 | 描述 |
+|---|---|
+| **名称** | 规则的可读标签 |
+| **查找模式** | 用于匹配的标准正则表达式 |
+| **替换为** | 替换字符串（支持捕获组引用） |
+| **作用范围** | 规则适用于**用户**消息、**助手**消息还是两者 |
+| **仅视觉** | 启用后，替换仅在界面中显示，但原始文本仍会发送给模型 |
+
+<Tip>
+  当你想在不改变模型实际看到的内容的情况下清理显示效果时，启用**仅视觉**——例如，去除渲染器已处理的 Markdown 语法。
+</Tip>
+
+要管理正则表达式规则，请打开助手的**提示词**标签页并滚动到**正则表达式**部分。
